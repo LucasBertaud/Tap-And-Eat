@@ -1,4 +1,4 @@
-import { UserManagementView } from "@/src/views/UserManagementView";
+import { UserManagementView } from "@/views";
 import React from "react";
 
 export default function HomeScreen() {

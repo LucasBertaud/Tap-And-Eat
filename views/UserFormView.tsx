@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { observer } from "mobx-react-lite";
+import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -10,42 +11,51 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useUserViewModel } from "../viewmodels";
+import { userViewModel } from "./UserListView";
 
 /**
  * UserFormView
- * Composant Vue pour créer ou modifier un utilisateur
+ * Composant pour créer ou modifier un utilisateur
+ * Wrapped avec observer() pour réagir aux changements de selectedUser
  */
-export const UserFormView: React.FC = () => {
-  const viewModel = useUserViewModel();
+const UserFormView = observer(() => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [age, setAge] = useState("");
 
+  // Pré-remplir le formulaire si un utilisateur est sélectionné
+  useEffect(() => {
+    if (userViewModel.selectedUser) {
+      setName(userViewModel.selectedUser.name);
+      setEmail(userViewModel.selectedUser.email);
+      setAge(userViewModel.selectedUser.age?.toString() || "");
+    }
+  }, [userViewModel.selectedUser]);
+
   const handleSubmit = async () => {
     if (!name.trim() || !email.trim()) {
-      alert("Veuillez remplir tous les champs obligatoires");
+      Alert.alert("Erreur", "Veuillez remplir tous les champs obligatoires");
       return;
     }
 
     const ageNumber = age ? parseInt(age, 10) : undefined;
 
-    if (viewModel.selectedUser) {
-      await viewModel.updateUser(viewModel.selectedUser.id, {
+    if (userViewModel.selectedUser) {
+      await userViewModel.updateUser(userViewModel.selectedUser.id, {
         name,
         email,
         age: ageNumber,
       });
     } else {
-      await viewModel.createUser(name, email, ageNumber);
+      await userViewModel.createUser(name, email, ageNumber);
     }
 
-    // Réinitialiser le formulaire après soumission
-    if (!viewModel.error) {
+    // Réinitialiser le formulaire
+    if (!userViewModel.error) {
       setName("");
       setEmail("");
       setAge("");
-      viewModel.selectUser(null);
+      userViewModel.selectUser(null);
     }
   };
 
@@ -53,17 +63,8 @@ export const UserFormView: React.FC = () => {
     setName("");
     setEmail("");
     setAge("");
-    viewModel.selectUser(null);
+    userViewModel.selectUser(null);
   };
-
-  // Pré-remplir le formulaire si un utilisateur est sélectionné
-  React.useEffect(() => {
-    if (viewModel.selectedUser) {
-      setName(viewModel.selectedUser.name);
-      setEmail(viewModel.selectedUser.email);
-      setAge(viewModel.selectedUser.age?.toString() || "");
-    }
-  }, [viewModel.selectedUser]);
 
   return (
     <KeyboardAvoidingView
@@ -73,15 +74,15 @@ export const UserFormView: React.FC = () => {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.formContainer}>
           <Text style={styles.title}>
-            {viewModel.selectedUser
+            {userViewModel.selectedUser
               ? "Modifier l'utilisateur"
               : "Nouvel utilisateur"}
           </Text>
 
-          {viewModel.error && (
+          {userViewModel.error && (
             <View style={styles.errorContainer}>
-              <Text style={styles.errorText}>{viewModel.error}</Text>
-              <TouchableOpacity onPress={() => viewModel.clearError()}>
+              <Text style={styles.errorText}>{userViewModel.error}</Text>
+              <TouchableOpacity onPress={() => userViewModel.clearError()}>
                 <Text style={styles.dismissError}>✕</Text>
               </TouchableOpacity>
             </View>
@@ -94,7 +95,7 @@ export const UserFormView: React.FC = () => {
               value={name}
               onChangeText={setName}
               placeholder="Entrez le nom"
-              editable={!viewModel.loading}
+              editable={!userViewModel.loading}
             />
           </View>
 
@@ -107,7 +108,7 @@ export const UserFormView: React.FC = () => {
               placeholder="Entrez l'email"
               keyboardType="email-address"
               autoCapitalize="none"
-              editable={!viewModel.loading}
+              editable={!userViewModel.loading}
             />
           </View>
 
@@ -119,7 +120,7 @@ export const UserFormView: React.FC = () => {
               onChangeText={setAge}
               placeholder="Entrez l'âge"
               keyboardType="numeric"
-              editable={!viewModel.loading}
+              editable={!userViewModel.loading}
             />
           </View>
 
@@ -127,7 +128,7 @@ export const UserFormView: React.FC = () => {
             <TouchableOpacity
               style={[styles.button, styles.cancelButton]}
               onPress={handleCancel}
-              disabled={viewModel.loading}
+              disabled={userViewModel.loading}
             >
               <Text style={styles.cancelButtonText}>Annuler</Text>
             </TouchableOpacity>
@@ -135,13 +136,13 @@ export const UserFormView: React.FC = () => {
             <TouchableOpacity
               style={[styles.button, styles.submitButton]}
               onPress={handleSubmit}
-              disabled={viewModel.loading}
+              disabled={userViewModel.loading}
             >
-              {viewModel.loading ? (
+              {userViewModel.loading ? (
                 <ActivityIndicator color="#fff" />
               ) : (
                 <Text style={styles.submitButtonText}>
-                  {viewModel.selectedUser ? "Modifier" : "Créer"}
+                  {userViewModel.selectedUser ? "Modifier" : "Créer"}
                 </Text>
               )}
             </TouchableOpacity>
@@ -150,7 +151,7 @@ export const UserFormView: React.FC = () => {
       </ScrollView>
     </KeyboardAvoidingView>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -244,3 +245,5 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 });
+
+export default UserFormView;
