@@ -1,14 +1,14 @@
 import React from "react";
 import { SafeAreaView, StyleSheet, View } from "react-native";
-import { UserFormView } from "./UserFormView";
-import { UserListView } from "./UserListView";
+import UserFormView from "./UserFormView";
+import UserListView from "./UserListView";
 
 /**
  * UserManagementView
- * Vue principale qui combine la liste et le formulaire des utilisateurs
- * Exemple d'utilisation complète de l'architecture MVVM
+ * Vue principale combinant le formulaire et la liste
+ * Exemple complet d'utilisation de MVVM avec MobX
  */
-export const UserManagementView: React.FC = () => {
+const UserManagementView: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.formSection}>
@@ -35,3 +35,5 @@ const styles = StyleSheet.create({
     flex: 0.6,
   },
 });
+
+export default UserManagementView;

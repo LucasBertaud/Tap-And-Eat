@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
 import {
   ActivityIndicator,
@@ -8,19 +9,19 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useUserViewModel } from "../viewmodels";
+import UserViewModel from "../viewModels/UserViewModel";
+
+// Instance unique du ViewModel (initialisée une seule fois)
+const userViewModel = new UserViewModel();
 
 /**
  * UserListView
- * Composant Vue qui affiche la liste des utilisateurs
- * Utilise le UserViewModel pour accéder aux données et aux actions
+ * Composant qui affiche la liste des utilisateurs
+ * Wrapped avec observer() pour réagir aux changements MobX
  */
-export const UserListView: React.FC = () => {
-  const viewModel = useUserViewModel();
-
+const UserListView = observer(() => {
   useEffect(() => {
-    viewModel.loadUsers();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    userViewModel.loadUsers();
   }, []);
 
   const handleDeleteUser = (id: string, name: string) => {
@@ -29,12 +30,12 @@ export const UserListView: React.FC = () => {
       {
         text: "Supprimer",
         style: "destructive",
-        onPress: () => viewModel.deleteUser(id),
+        onPress: () => userViewModel.deleteUser(id),
       },
     ]);
   };
 
-  if (viewModel.loading && viewModel.users.length === 0) {
+  if (userViewModel.loading && userViewModel.users.length === 0) {
     return (
       <View style={styles.centerContainer}>
         <ActivityIndicator size="large" color="#007AFF" />
@@ -43,13 +44,13 @@ export const UserListView: React.FC = () => {
     );
   }
 
-  if (viewModel.error) {
+  if (userViewModel.error) {
     return (
       <View style={styles.centerContainer}>
-        <Text style={styles.errorText}>{viewModel.error}</Text>
+        <Text style={styles.errorText}>{userViewModel.error}</Text>
         <TouchableOpacity
           style={styles.retryButton}
-          onPress={() => viewModel.loadUsers()}
+          onPress={() => userViewModel.loadUsers()}
         >
           <Text style={styles.retryButtonText}>Réessayer</Text>
         </TouchableOpacity>
@@ -60,25 +61,21 @@ export const UserListView: React.FC = () => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={viewModel.users}
+        data={userViewModel.users}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.userCard}>
             <View style={styles.userInfo}>
               <Text style={styles.userName}>{item.name}</Text>
               <Text style={styles.userEmail}>{item.email}</Text>
-              {item.age && (
-                <Text style={styles.userAge}>
-                  {item.age} ans {item.isAdult() ? "(majeur)" : "(mineur)"}
-                </Text>
-              )}
+              {item.age && <Text style={styles.userAge}>{item.age} ans</Text>}
             </View>
             <View style={styles.actions}>
               <TouchableOpacity
                 style={styles.selectButton}
-                onPress={() => viewModel.selectUser(item)}
+                onPress={() => userViewModel.selectUser(item)}
               >
-                <Text style={styles.selectButtonText}>Détails</Text>
+                <Text style={styles.selectButtonText}>Modifier</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.deleteButton}
@@ -94,12 +91,12 @@ export const UserListView: React.FC = () => {
             <Text style={styles.emptyText}>Aucun utilisateur</Text>
           </View>
         }
-        refreshing={viewModel.loading}
-        onRefresh={() => viewModel.loadUsers()}
+        refreshing={userViewModel.loading}
+        onRefresh={() => userViewModel.loadUsers()}
       />
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -201,3 +198,6 @@ const styles = StyleSheet.create({
     color: "#999",
   },
 });
+
+export default UserListView;
+export { userViewModel };
