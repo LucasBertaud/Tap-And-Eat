@@ -1,5 +1,6 @@
 import { ThemedText } from '@/src/components/themed-text'
 import { ThemedView } from '@/src/components/themed-view'
+import { Colors } from '@/src/constants'
 import { useAppSelector } from '@/src/store/hooks'
 import { useHomeViewModel } from '@/src/viewmodels/HomeViewModel'
 import { ActivityIndicator, StyleSheet, TouchableOpacity } from 'react-native'
@@ -48,7 +49,7 @@ const HomeView = () => {
         disabled={viewModel.isLoading}
       >
         {viewModel.isLoading ? (
-          <ActivityIndicator color="#fff" />
+          <ActivityIndicator color={Colors.text.inverse} />
         ) : (
           <ThemedText style={styles.signOutText}>Se déconnecter</ThemedText>
         )}
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.05)',
   },
   signOutButton: {
-    backgroundColor: '#FF3B30',
+    backgroundColor: Colors.error[600],
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
@@ -88,7 +89,7 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   signOutText: {
-    color: '#fff',
+    color: Colors.text.inverse,
     fontSize: 16,
     fontWeight: '600',
   },

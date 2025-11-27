@@ -3,12 +3,13 @@ import React from 'react'
 
 import { HapticTab } from '@/src/components/haptic-tab'
 import { IconSymbol } from '@/src/components/ui/icon-symbol'
+import { Colors } from '@/src/constants'
 
 export function TabsLayoutView() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: '#0a7ea4',
+        tabBarActiveTintColor: Colors.primary[600],
         headerShown: false,
         tabBarButton: HapticTab,
       }}

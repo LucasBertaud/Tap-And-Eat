@@ -25,10 +25,11 @@ class AuthService {
   /**
    * Inscription avec email et mot de passe
    */
-  async signUp({ email, password }: SignUpCredentials) {
+  async signUp({ email, password, options }: SignUpCredentials) {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
+      options,
     })
 
     if (error) {
@@ -66,20 +67,29 @@ class AuthService {
   }
 
   /**
-   * Récupère le profil utilisateur
+   * Récupère le profil utilisateur depuis les métadonnées
    */
   async getProfile(userId: string) {
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', userId)
-      .single()
+    // Récupérer la session pour accéder aux métadonnées utilisateur
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession()
 
-    if (error) {
-      throw error
+    if (sessionError) {
+      throw sessionError
     }
 
-    return data
+    if (!session?.user) {
+      throw new Error('Utilisateur non connecté')
+    }
+
+    // Les données sont stockées dans user_metadata
+    const { full_name, phone } = session.user.user_metadata || {}
+
+    return {
+      id: userId,
+      full_name: full_name || null,
+      phone: phone || null,
+      email: session.user.email,
+    }
   }
 }
 

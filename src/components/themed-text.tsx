@@ -1,3 +1,4 @@
+import { Colors } from '@/src/constants';
 import { StyleSheet, Text, type TextProps } from 'react-native';
 
 export type ThemedTextProps = TextProps & {
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
   default: {
     fontSize: 16,
     lineHeight: 24,
-    color: '#11181C',
+    color: Colors.text.primary,
   },
   defaultSemiBold: {
     fontSize: 16,
@@ -48,6 +49,6 @@ const styles = StyleSheet.create({
   link: {
     lineHeight: 30,
     fontSize: 16,
-    color: '#0a7ea4',
+    color: Colors.primary[600],
   },
 });
