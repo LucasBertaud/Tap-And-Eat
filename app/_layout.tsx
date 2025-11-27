@@ -1,33 +1,34 @@
-import { DefaultTheme, ThemeProvider } from '@react-navigation/native'
-import { useFonts } from 'expo-font'
-import { Stack, useRouter, useSegments } from 'expo-router'
-import { StatusBar } from 'expo-status-bar'
-import { useEffect } from 'react'
-import 'react-native-reanimated'
-import { Provider } from 'react-redux'
+import { DefaultTheme, ThemeProvider } from "@react-navigation/native";
+import { useFonts } from "expo-font";
+import { Stack, useRouter, useSegments } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { useEffect } from "react";
+import "react-native-reanimated";
+import { Provider } from "react-redux";
+import "../global.css";
 
-import { SplashScreenController } from '@/src/components/splash-screen-controller'
-import { useAuth } from '@/src/hooks/use-auth-redux'
-import { store } from '@/src/store'
+import { SplashScreenController } from "@/src/components/splash-screen-controller";
+import { useAuth } from "@/src/hooks/use-auth-redux";
+import { store } from "@/src/store";
 
 function RootNavigator() {
-  const { isLoggedIn, isLoading } = useAuth()
-  const segments = useSegments()
-  const router = useRouter()
+  const { isLoggedIn, isLoading } = useAuth();
+  const segments = useSegments();
+  const router = useRouter();
 
   useEffect(() => {
-    if (isLoading) return
+    if (isLoading) return;
 
-    const inAuthGroup = segments[0] === '(tabs)'
+    const inAuthGroup = segments[0] === "(tabs)";
 
     if (!isLoggedIn && inAuthGroup) {
       // Rediriger vers login si déconnecté
-      router.replace('/login')
+      router.replace("/login");
     } else if (isLoggedIn && !inAuthGroup) {
       // Rediriger vers home si connecté
-      router.replace('/(tabs)')
+      router.replace("/(tabs)");
     }
-  }, [isLoggedIn, segments, isLoading])
+  }, [isLoggedIn, segments, isLoading]);
 
   return (
     <Stack>
@@ -35,16 +36,16 @@ function RootNavigator() {
       <Stack.Screen name="login" options={{ headerShown: false }} />
       <Stack.Screen name="+not-found" />
     </Stack>
-  )
+  );
 }
 
 export default function RootLayout() {
   const [loaded] = useFonts({
-    SpaceMono: require('../src/assets/fonts/SpaceMono-Regular.ttf'),
-  })
+    SpaceMono: require("../src/assets/fonts/SpaceMono-Regular.ttf"),
+  });
 
   if (!loaded) {
-    return null
+    return null;
   }
 
   return (
@@ -55,5 +56,5 @@ export default function RootLayout() {
         <StatusBar style="auto" />
       </ThemeProvider>
     </Provider>
-  )
+  );
 }
