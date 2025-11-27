@@ -1,4 +1,5 @@
 import { OptionGroupSelector } from "@/src/components/product";
+import { Navbar, ScreenWrapper } from "@/src/components/ui";
 import { addToCart } from "@/src/store/slices/cartSlice";
 import { useProductDetailViewModel } from "@/src/viewmodels/ProductDetailViewModel";
 import { Ionicons } from "@expo/vector-icons";
@@ -73,42 +74,40 @@ export function ProductDetailView({ productId }: ProductDetailViewProps) {
 
   if (loading) {
     return (
-      <View className="flex-1 items-center justify-center bg-gray-50">
-        <ActivityIndicator size="large" color="#FF6B35" />
-        <Text className="text-gray-600 mt-4">Chargement...</Text>
-      </View>
+      <ScreenWrapper className="flex-1 bg-gray-50">
+        <View className="flex-1 items-center justify-center">
+          <ActivityIndicator size="large" color="#FF6B35" />
+          <Text className="text-gray-600 mt-4">Chargement...</Text>
+        </View>
+      </ScreenWrapper>
     );
   }
 
   if (error || !product) {
     return (
-      <View className="flex-1 items-center justify-center bg-gray-50 p-6">
-        <Ionicons name="alert-circle-outline" size={64} color="#EF4444" />
-        <Text className="text-lg text-gray-800 font-semibold mt-4">
-          {error || "Produit introuvable"}
-        </Text>
-        <TouchableOpacity
-          onPress={reload}
-          className="bg-primary-500 px-6 py-3 rounded-full mt-6"
-        >
-          <Text className="text-white font-semibold">Réessayer</Text>
-        </TouchableOpacity>
-      </View>
+      <ScreenWrapper className="flex-1 bg-gray-50">
+        <View className="flex-1 items-center justify-center p-6">
+          <Ionicons name="alert-circle-outline" size={64} color="#EF4444" />
+          <Text className="text-lg text-gray-800 font-semibold mt-4">
+            {error || "Produit introuvable"}
+          </Text>
+          <TouchableOpacity
+            onPress={reload}
+            className="bg-primary-500 px-6 py-3 rounded-full mt-6"
+          >
+            <Text className="text-white font-semibold">Réessayer</Text>
+          </TouchableOpacity>
+        </View>
+      </ScreenWrapper>
     );
   }
 
   return (
-    <View className="flex-1 bg-gray-50">
-      <View className="bg-white shadow-sm">
-        <View className="flex-row items-center px-4 py-3 pt-12">
-          <TouchableOpacity onPress={() => router.back()} className="mr-4">
-            <Ionicons name="arrow-back" size={24} color="#1F2937" />
-          </TouchableOpacity>
-          <Text className="text-lg font-semibold text-gray-900 flex-1">
-            Détails du produit
-          </Text>
-        </View>
-      </View>
+    <ScreenWrapper
+      className="flex-1 bg-gray-50"
+      edges={["top", "left", "right", "bottom"]}
+    >
+      <Navbar title="Détails du produit" showBackButton />
 
       <ScrollView className="flex-1">
         <View className="w-full h-80 bg-gray-200">
@@ -241,6 +240,6 @@ export function ProductDetailView({ productId }: ProductDetailViewProps) {
           )}
         </View>
       )}
-    </View>
+    </ScreenWrapper>
   );
 }
