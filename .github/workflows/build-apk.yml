@@ -3,10 +3,10 @@ name: Build Android APK
 on:
   push:
     branches:
-      - 12-create-cicd
+      - main
   pull_request:
     branches:
-      - 12-create-cicd
+      - main
   workflow_dispatch:
 
 jobs:
