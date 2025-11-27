@@ -1,7 +1,3 @@
-/**
- * Models for Menu entities (Categories, Products, Options)
- */
-
 export interface Category {
   id: string;
   name: string;

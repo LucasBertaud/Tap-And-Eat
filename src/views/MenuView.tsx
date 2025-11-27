@@ -2,6 +2,7 @@ import { CategoryCard, ProductCard } from "@/src/components/menu";
 import { useAppSelector } from "@/src/store/hooks";
 import { useAuthViewModel, useMenuViewModel } from "@/src/viewmodels";
 import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 import React, { useState } from "react";
 import {
   ActivityIndicator,
@@ -63,8 +64,11 @@ export default function MenuView() {
   };
 
   const handleProductPress = (productId: string) => {
-    // TODO: Navigation vers la page de détails du produit (US2)
-    console.log("Product pressed:", productId);
+    console.log("Navigating to product:", productId);
+    router.push({
+      pathname: "/product/[id]",
+      params: { id: productId },
+    } as any);
   };
 
   if (isLoading && !refreshing) {
@@ -100,21 +104,10 @@ export default function MenuView() {
   return (
     <SafeAreaView className="flex-1 bg-gray-50">
       {/* En-tête avec recherche */}
-      <View className="bg-white px-4 pt-4 pb-2 border-b border-gray-200">
+      <View className="bg-white px-4 pt-12 pb-2 border-b border-gray-200">
         <View className="flex-row items-center justify-between mb-4">
           <Text className="text-2xl font-bold text-gray-900">Notre Menu</Text>
           <View className="flex-row items-center gap-3">
-            {(selectedCategoryId || searchQuery) && (
-              <TouchableOpacity
-                onPress={handleClearFilters}
-                className="flex-row items-center"
-              >
-                <Ionicons name="close-circle" size={20} color="#F97316" />
-                <Text className="text-orange-500 ml-1 font-medium">
-                  Réinitialiser
-                </Text>
-              </TouchableOpacity>
-            )}
             {isLoggedIn && (
               <TouchableOpacity
                 onPress={handleSignOut}

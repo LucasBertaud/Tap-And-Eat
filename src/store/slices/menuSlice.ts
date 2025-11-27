@@ -20,9 +20,6 @@ const initialState: MenuState = {
   error: null,
 };
 
-/**
- * Thunk pour récupérer les catégories avec leurs produits
- */
 export const fetchCategories = createAsyncThunk(
   "menu/fetchCategories",
   async (_, { rejectWithValue }) => {
@@ -35,18 +32,13 @@ export const fetchCategories = createAsyncThunk(
   }
 );
 
-/**
- * Applique les filtres sur les catégories
- */
 const applyFilters = (state: MenuState) => {
   let filtered = state.categories;
 
-  // Filtre par catégorie
   if (state.selectedCategoryId) {
     filtered = filtered.filter((cat) => cat.id === state.selectedCategoryId);
   }
 
-  // Filtre par recherche
   if (state.searchQuery) {
     const query = state.searchQuery.toLowerCase();
     filtered = filtered
@@ -64,9 +56,6 @@ const applyFilters = (state: MenuState) => {
   state.filteredCategories = filtered;
 };
 
-/**
- * Slice Redux pour le menu
- */
 const menuSlice = createSlice({
   name: "menu",
   initialState,

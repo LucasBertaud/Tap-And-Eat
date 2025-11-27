@@ -14,12 +14,12 @@ export function ProductCard({ product, onPress }: ProductCardProps) {
   return (
     <TouchableOpacity
       onPress={onPress}
-      className="bg-white rounded-xl shadow-sm mb-4 overflow-hidden"
+      className="bg-white rounded-xl shadow-sm mb-4 overflow-hidden h-40"
       activeOpacity={0.7}
     >
       <View className="flex-row">
         {/* Image du produit */}
-        <View className="w-28 h-28">
+        <View className="w-28 h-full">
           {product.image_url ? (
             <Image
               source={{ uri: product.image_url }}
