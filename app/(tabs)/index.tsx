@@ -1,8 +1,8 @@
-import HomeView from '@/src/views/HomeView'
+import { MenuView } from "@/src/views";
 
 /**
  * Home Screen
  */
 export default function HomeScreen() {
-  return <HomeView />
+  return <MenuView />;
 }

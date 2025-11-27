@@ -44,12 +44,14 @@ Ce projet suit le pattern MVVM pour une séparation claire des responsabilités 
 ### Installation
 
 1. Cloner le dépôt
+
    ```bash
    git clone <repository-url>
    cd Tap-And-Eat
    ```
 
 2. Installer les dépendances
+
    ```bash
    npm install
    ```
@@ -81,10 +83,10 @@ L'authentification est gérée par **Supabase** avec l'architecture MVVM :
 
 ```typescript
 // Dans un composant
-import { useAuthContext } from '@/hooks/use-auth-context'
+import { useAuthContext } from "@/hooks/use-auth-context";
 
 function MyComponent() {
-  const { session, isLoggedIn, profile } = useAuthContext()
+  const { session, isLoggedIn, profile } = useAuthContext();
   // ...
 }
 ```
@@ -103,55 +105,60 @@ function MyComponent() {
 ### Exemple : Ajouter une gestion de produits
 
 1. **Créer le Model** (`models/Product.ts`)
+
 ```typescript
 export interface Product {
-  id: string
-  name: string
-  price: number
+  id: string;
+  name: string;
+  price: number;
 }
 ```
 
 2. **Créer le Service** (`services/ProductService.ts`)
+
 ```typescript
 class ProductService {
   async fetchProducts(): Promise<Product[]> {
     // Appel API
   }
 }
-export default new ProductService()
+export default new ProductService();
 ```
 
 3. **Créer le ViewModel** (`viewmodels/ProductViewModel.ts`)
+
 ```typescript
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable } from "mobx";
 
 class ProductViewModel {
-  products: Product[] = []
-  loading = false
+  products: Product[] = [];
+  loading = false;
 
   constructor() {
-    makeAutoObservable(this)
+    makeAutoObservable(this);
   }
 
   async loadProducts() {
-    this.loading = true
-    this.products = await ProductService.fetchProducts()
-    this.loading = false
+    this.loading = true;
+    this.products = await ProductService.fetchProducts();
+    this.loading = false;
   }
 }
-export default ProductViewModel
+export default ProductViewModel;
 ```
 
 4. **Créer la View** (`views/ProductListView.tsx`)
+
 ```typescript
-import { observer } from 'mobx-react-lite'
+import { observer } from "mobx-react-lite";
 
 const ProductListView = observer(({ viewModel }: Props) => {
   // UI qui observe viewModel.products
-})
+});
 ```
 
 5. **Utiliser dans une route** (`app/(tabs)/products.tsx`)
+
 ```typescript
 const viewModel = useMemo(() => new ProductViewModel(), [])
 return <ProductListView viewModel={viewModel} />

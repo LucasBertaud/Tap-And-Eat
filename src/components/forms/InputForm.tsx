@@ -1,13 +1,18 @@
-import { Colors } from '@/src/constants'
-import MaterialIcons from '@expo/vector-icons/MaterialIcons'
-import { useState } from 'react'
-import { Text, TextInput, TextInputProps, TouchableOpacity, View } from 'react-native'
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { useState } from "react";
+import {
+  Text,
+  TextInput,
+  TextInputProps,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 interface InputFormProps extends TextInputProps {
-  label: string
-  error?: string
-  required?: boolean
-  isPassword?: boolean
+  label: string;
+  error?: string;
+  required?: boolean;
+  isPassword?: boolean;
 }
 
 /**
@@ -24,8 +29,8 @@ export const InputForm = ({
   isPassword = false,
   ...props
 }: InputFormProps) => {
-  const [isFocused, setIsFocused] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
+  const [isFocused, setIsFocused] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <View className="mb-6">
@@ -36,16 +41,16 @@ export const InputForm = ({
         <TextInput
           className={`w-full h-16 px-6 bg-surface border ${
             error
-              ? 'border-error-500'
+              ? "border-error-500"
               : isFocused
-              ? 'border-primary-500'
-              : 'border-border-default'
-          } rounded-lg text-lg ${isPassword ? 'pr-14' : ''}`}
+                ? "border-primary-500"
+                : "border-border-default"
+          } rounded-lg text-lg ${isPassword ? "pr-14" : ""}`}
           value={value}
           onChangeText={onChangeText}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          placeholderTextColor={Colors.text.tertiary}
+          placeholderTextColor="#9CA3AF"
           secureTextEntry={isPassword && !showPassword}
           {...props}
         />
@@ -55,9 +60,9 @@ export const InputForm = ({
             onPress={() => setShowPassword(!showPassword)}
           >
             <MaterialIcons
-              name={showPassword ? 'visibility-off' : 'visibility'}
+              name={showPassword ? "visibility-off" : "visibility"}
               size={24}
-              color={Colors.secondary[500]}
+              color="#6B7280"
             />
           </TouchableOpacity>
         )}
@@ -68,5 +73,5 @@ export const InputForm = ({
         </View>
       ) : null}
     </View>
-  )
-}
+  );
+};

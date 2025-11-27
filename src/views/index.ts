@@ -1,5 +1,4 @@
-export { default as AuthView } from './AuthView'
-export { default as HomeView } from './HomeView'
-export { NotFoundView } from './NotFoundView'
-export { TabsLayoutView } from './TabsLayoutView'
-
+export { default as AuthView } from "./AuthView";
+export { default as MenuView } from "./MenuView";
+export { NotFoundView } from "./NotFoundView";
+export { TabsLayoutView } from "./TabsLayoutView";
