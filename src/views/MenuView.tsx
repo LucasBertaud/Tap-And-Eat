@@ -1,4 +1,5 @@
 import { CategoryCard, ProductCard } from "@/src/components/menu";
+import { Navbar, ScreenWrapper } from "@/src/components/ui";
 import { useAppSelector } from "@/src/store/hooks";
 import { useAuthViewModel, useMenuViewModel } from "@/src/viewmodels";
 import { Ionicons } from "@expo/vector-icons";
@@ -7,7 +8,6 @@ import React, { useState } from "react";
 import {
   ActivityIndicator,
   RefreshControl,
-  SafeAreaView,
   ScrollView,
   Text,
   TextInput,
@@ -73,18 +73,18 @@ export default function MenuView() {
 
   if (isLoading && !refreshing) {
     return (
-      <SafeAreaView className="flex-1 bg-gray-50">
+      <ScreenWrapper className="flex-1 bg-gray-50">
         <View className="flex-1 items-center justify-center">
           <ActivityIndicator size="large" color="#F97316" />
           <Text className="text-gray-600 mt-4">Chargement du menu...</Text>
         </View>
-      </SafeAreaView>
+      </ScreenWrapper>
     );
   }
 
   if (error) {
     return (
-      <SafeAreaView className="flex-1 bg-gray-50">
+      <ScreenWrapper className="flex-1 bg-gray-50">
         <View className="flex-1 items-center justify-center px-6">
           <Ionicons name="alert-circle-outline" size={64} color="#EF4444" />
           <Text className="text-red-600 text-lg font-semibold mt-4 text-center">
@@ -97,32 +97,32 @@ export default function MenuView() {
             <Text className="text-white font-semibold">Réessayer</Text>
           </TouchableOpacity>
         </View>
-      </SafeAreaView>
+      </ScreenWrapper>
     );
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50">
-      {/* En-tête avec recherche */}
-      <View className="bg-white px-4 pt-12 pb-2 border-b border-gray-200">
-        <View className="flex-row items-center justify-between mb-4">
-          <Text className="text-2xl font-bold text-gray-900">Notre Menu</Text>
-          <View className="flex-row items-center gap-3">
-            {isLoggedIn && (
-              <TouchableOpacity
-                onPress={handleSignOut}
-                className="flex-row items-center bg-red-50 px-3 py-2 rounded-lg"
-                activeOpacity={0.7}
-              >
-                <Ionicons name="log-out-outline" size={20} color="#EF4444" />
-                <Text className="text-red-600 ml-1 font-medium">
-                  Déconnexion
-                </Text>
-              </TouchableOpacity>
-            )}
-          </View>
-        </View>
+    <ScreenWrapper className="flex-1 bg-gray-50">
+      {/* En-tête */}
+      <Navbar
+        title="Notre Menu"
+        actions={
+          isLoggedIn
+            ? [
+                {
+                  icon: "log-out-outline",
+                  label: "Déconnexion",
+                  color: "#EF4444",
+                  backgroundColor: "bg-error-50",
+                  onPress: handleSignOut,
+                },
+              ]
+            : []
+        }
+      />
 
+      {/* Barre de recherche */}
+      <View className="bg-white px-4 pb-2 border-b border-gray-200">
         {/* Barre de recherche */}
         <View className="flex-row items-center bg-gray-100 rounded-lg px-4 py-3 mb-4">
           <Ionicons name="search" size={20} color="#9CA3AF" />
@@ -240,6 +240,6 @@ export default function MenuView() {
         {/* Espace en bas pour le scroll */}
         <View className="h-6" />
       </ScrollView>
-    </SafeAreaView>
+    </ScreenWrapper>
   );
 }

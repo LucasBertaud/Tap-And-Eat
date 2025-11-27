@@ -4,6 +4,7 @@ import { Stack, useRouter, useSegments } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import "react-native-reanimated";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
 import "../global.css";
 
@@ -57,11 +58,13 @@ export default function RootLayout() {
 
   return (
     <Provider store={store}>
-      <ThemeProvider value={DefaultTheme}>
-        <SplashScreenController />
-        <RootNavigator />
-        <StatusBar style="auto" />
-      </ThemeProvider>
+      <SafeAreaProvider>
+        <ThemeProvider value={DefaultTheme}>
+          <SplashScreenController />
+          <RootNavigator />
+          <StatusBar style="auto" />
+        </ThemeProvider>
+      </SafeAreaProvider>
     </Provider>
   );
 }
