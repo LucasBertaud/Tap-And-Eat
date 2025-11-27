@@ -1,0 +1,133 @@
+name: Build APK/IPA
+
+on:
+  push:
+    branches:
+      - 12-create-cicd
+  pull_request:
+    branches:
+      - 12-create-cicd
+  workflow_dispatch:
+
+jobs:
+  build-android:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          expo-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create .env file
+        run: |
+          echo "EXPO_PUBLIC_SUPABASE_URL=${{ secrets.EXPO_PUBLIC_SUPABASE_URL }}" >> .env
+          echo "EXPO_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.EXPO_PUBLIC_SUPABASE_ANON_KEY }}" >> .env
+
+      - name: Build Android APK
+        run: |
+          eas build --platform android --profile preview --non-interactive --no-wait
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Wait for build completion
+        run: |
+          # Wait for the build to complete (max 30 minutes)
+          for i in {1..60}; do
+            status=$(eas build:list --platform android --limit 1 --json | jq -r '.[0].status')
+            echo "Build status: $status"
+            if [ "$status" = "finished" ]; then
+              echo "Build completed successfully!"
+              break
+            elif [ "$status" = "errored" ] || [ "$status" = "canceled" ]; then
+              echo "Build failed with status: $status"
+              exit 1
+            fi
+            sleep 30
+          done
+
+      - name: Download APK
+        run: |
+          build_url=$(eas build:list --platform android --limit 1 --json | jq -r '.[0].artifacts.buildUrl')
+          curl -L -o app-release.apk "$build_url"
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-apk
+          path: app-release.apk
+          retention-days: 30
+
+  build-ios:
+    name: Build iOS IPA
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          expo-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create .env file
+        run: |
+          echo "EXPO_PUBLIC_SUPABASE_URL=${{ secrets.EXPO_PUBLIC_SUPABASE_URL }}" >> .env
+          echo "EXPO_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.EXPO_PUBLIC_SUPABASE_ANON_KEY }}" >> .env
+
+      - name: Build iOS IPA
+        run: |
+          eas build --platform ios --profile preview --non-interactive --no-wait
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Wait for build completion
+        run: |
+          # Wait for the build to complete (max 30 minutes)
+          for i in {1..60}; do
+            status=$(eas build:list --platform ios --limit 1 --json | jq -r '.[0].status')
+            echo "Build status: $status"
+            if [ "$status" = "finished" ]; then
+              echo "Build completed successfully!"
+              break
+            elif [ "$status" = "errored" ] || [ "$status" = "canceled" ]; then
+              echo "Build failed with status: $status"
+              exit 1
+            fi
+            sleep 30
+          done
+
+      - name: Download IPA
+        run: |
+          build_url=$(eas build:list --platform ios --limit 1 --json | jq -r '.[0].artifacts.buildUrl')
+          curl -L -o app-release.ipa "$build_url"
+
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-ipa
+          path: app-release.ipa
+          retention-days: 30
