@@ -9,11 +9,6 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "owner": "gunride56",
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.gunride56.tapandeat",
-      "buildNumber": "1"
-    },
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",

@@ -1,4 +1,4 @@
-name: Build APK/IPA
+name: Build Android APK
 
 on:
   push:
@@ -78,74 +78,4 @@ jobs:
         with:
           name: android-apk
           path: app-release.apk
-          retention-days: 30
-
-  build-ios:
-    name: Build iOS IPA
-    runs-on: macos-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: Setup Expo
-        uses: expo/expo-github-action@v8
-        with:
-          expo-version: latest
-          token: ${{ secrets.EXPO_TOKEN }}
-
-      - name: Install EAS CLI
-        run: npm install -g eas-cli
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Create .env file
-        run: |
-          echo "EXPO_PUBLIC_SUPABASE_URL=${{ secrets.EXPO_PUBLIC_SUPABASE_URL }}" >> .env
-          echo "EXPO_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.EXPO_PUBLIC_SUPABASE_ANON_KEY }}" >> .env
-
-      - name: Configure EAS
-        run: |
-          eas init --id ${{ secrets.EXPO_PROJECT_ID }} --non-interactive
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-
-      - name: Build iOS IPA
-        run: |
-          eas build --platform ios --profile preview --non-interactive --no-wait
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-
-      - name: Wait for build completion
-        run: |
-          # Wait for the build to complete (max 30 minutes)
-          for i in {1..60}; do
-            status=$(eas build:list --platform ios --limit 1 --json | jq -r '.[0].status')
-            echo "Build status: $status"
-            if [ "$status" = "finished" ]; then
-              echo "Build completed successfully!"
-              break
-            elif [ "$status" = "errored" ] || [ "$status" = "canceled" ]; then
-              echo "Build failed with status: $status"
-              exit 1
-            fi
-            sleep 30
-          done
-
-      - name: Download IPA
-        run: |
-          build_url=$(eas build:list --platform ios --limit 1 --json | jq -r '.[0].artifacts.buildUrl')
-          curl -L -o app-release.ipa "$build_url"
-
-      - name: Upload IPA artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ios-ipa
-          path: app-release.ipa
           retention-days: 30
