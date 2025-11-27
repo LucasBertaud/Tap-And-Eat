@@ -1,23 +1,75 @@
+import { OptionGroupSelector } from "@/src/components/product";
+import { addToCart } from "@/src/store/slices/cartSlice";
 import { useProductDetailViewModel } from "@/src/viewmodels/ProductDetailViewModel";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React from "react";
 import {
   ActivityIndicator,
+  Alert,
   Image,
   ScrollView,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
+import { useDispatch } from "react-redux";
 
 interface ProductDetailViewProps {
   productId: string;
 }
 
 export function ProductDetailView({ productId }: ProductDetailViewProps) {
-  const { product, loading, error, reload } =
-    useProductDetailViewModel(productId);
+  const dispatch = useDispatch();
+  const {
+    product,
+    loading,
+    error,
+    reload,
+    selectedOptions,
+    quantity,
+    setQuantity,
+    handleOptionToggle,
+    totalPrice,
+    canAddToCart,
+    getSelectedOptionsList,
+  } = useProductDetailViewModel(productId);
+
+  // Gestion de la sélection avec affichage d'erreur
+  const onOptionToggle = (groupId: string, optionId: string) => {
+    const errorMessage = handleOptionToggle(groupId, optionId);
+    if (errorMessage) {
+      Alert.alert("Limite atteinte", errorMessage);
+    }
+  };
+
+  const handleAddToCart = () => {
+    if (!canAddToCart || !product) {
+      Alert.alert(
+        "Options manquantes",
+        "Veuillez sélectionner toutes les options requises"
+      );
+      return;
+    }
+
+    // Récupérer les options sélectionnées depuis le ViewModel
+    const selectedOptionsList = getSelectedOptionsList();
+
+    // Ajouter au panier via Redux
+    dispatch(
+      addToCart({
+        product,
+        selectedOptions: selectedOptionsList,
+        quantity,
+      })
+    );
+
+    Alert.alert(
+      "✅ Ajouté au panier",
+      `${quantity}x ${product.name} ajouté au panier`,
+      [{ text: "OK", onPress: () => router.back() }]
+    );
+  };
 
   if (loading) {
     return (
@@ -91,93 +143,102 @@ export function ProductDetailView({ productId }: ProductDetailViewProps) {
 
         {product.ingredients && product.ingredients.length > 0 && (
           <View className="bg-white mt-2 p-6">
-            <Text className="text-lg font-semibold text-gray-900 mb-3">
+            <Text className="text-lg font-semibold text-secondary-900 mb-3">
               Ingrédients
             </Text>
             <View className="flex-row flex-wrap">
               {product.ingredients.map((ingredient, index) => (
                 <View
                   key={index}
-                  className="bg-gray-100 rounded-full px-4 py-2 mr-2 mb-2"
+                  className="bg-secondary-100 rounded-full px-4 py-2 mr-2 mb-2"
                 >
-                  <Text className="text-sm text-gray-700">{ingredient}</Text>
+                  <Text className="text-sm text-secondary-700">
+                    {ingredient}
+                  </Text>
                 </View>
               ))}
             </View>
           </View>
         )}
 
+        {/* Personnalisation */}
         {product.option_groups && product.option_groups.length > 0 && (
           <View className="bg-white mt-2 p-6">
-            <Text className="text-lg font-semibold text-gray-900 mb-4">
-              Options disponibles
+            <Text className="text-2xl font-bold text-secondary-900 mb-6">
+              Personnalisez votre commande
             </Text>
 
             {product.option_groups.map((group) => (
-              <View key={group.id} className="mb-6">
-                <View className="flex-row items-center justify-between mb-3">
-                  <Text className="text-base font-semibold text-gray-800">
-                    {group.name}
-                  </Text>
-                  {group.is_required && (
-                    <View className="bg-error-100 rounded-full px-3 py-1">
-                      <Text className="text-xs text-error-700 font-medium">
-                        Requis
-                      </Text>
-                    </View>
-                  )}
-                </View>
-
-                {group.description && (
-                  <Text className="text-sm text-gray-600 mb-3">
-                    {group.description}
-                  </Text>
-                )}
-
-                {group.allow_multiple && (
-                  <Text className="text-xs text-gray-500 mb-3">
-                    {group.min_selections > 0
-                      ? `Sélectionnez entre ${group.min_selections} et ${group.max_selections || "plusieurs"} options`
-                      : `Sélectionnez jusqu'à ${group.max_selections || "plusieurs"} options`}
-                  </Text>
-                )}
-
-                <View className="space-y-2">
-                  {group.options.map((option) => (
-                    <View
-                      key={option.id}
-                      className="flex-row items-center justify-between py-3 border-b border-gray-100"
-                    >
-                      <Text className="text-sm text-gray-800 flex-1">
-                        {option.name}
-                      </Text>
-                      {option.price_modifier !== 0 && (
-                        <Text className="text-sm text-primary-500 font-medium ml-2">
-                          {option.price_modifier > 0 ? "+" : ""}
-                          {option.price_modifier.toFixed(2)} €
-                        </Text>
-                      )}
-                    </View>
-                  ))}
-                </View>
-              </View>
+              <OptionGroupSelector
+                key={group.id}
+                group={group}
+                selectedOptionIds={selectedOptions[group.id] || []}
+                onOptionToggle={(optionId) =>
+                  onOptionToggle(group.id, optionId)
+                }
+              />
             ))}
           </View>
         )}
 
-        <View className="h-24" />
+        <View className="h-32" />
       </ScrollView>
 
+      {/* Barre d'ajout au panier fixe en bas */}
       {product.is_available && (
-        <View className="bg-white border-t border-gray-200 px-6 py-4">
+        <View className="bg-white border-t border-secondary-200 px-6 pt-4 pb-8 shadow-lg">
+          {/* Sélecteur de quantité */}
+          <View className="flex-row items-center justify-between mb-4">
+            <Text className="text-lg font-bold text-secondary-900">
+              Quantité
+            </Text>
+            <View className="flex-row items-center bg-secondary-100 rounded-xl overflow-hidden">
+              <TouchableOpacity
+                onPress={() => setQuantity(Math.max(1, quantity - 1))}
+                className="w-14 h-14 items-center justify-center"
+                activeOpacity={0.7}
+              >
+                <Ionicons name="remove-circle" size={32} color="#F97316" />
+              </TouchableOpacity>
+              <Text className="text-2xl font-bold text-secondary-900 px-6">
+                {quantity}
+              </Text>
+              <TouchableOpacity
+                onPress={() => setQuantity(quantity + 1)}
+                className="w-14 h-14 items-center justify-center"
+                activeOpacity={0.7}
+              >
+                <Ionicons name="add-circle" size={32} color="#F97316" />
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          {/* Bouton ajouter au panier */}
           <TouchableOpacity
-            className="bg-primary-500 rounded-full py-4 items-center"
+            onPress={handleAddToCart}
+            disabled={!canAddToCart}
+            className={`rounded-xl py-5 items-center shadow-lg ${
+              canAddToCart ? "bg-primary-500" : "bg-secondary-400"
+            }`}
             activeOpacity={0.8}
           >
-            <Text className="text-white text-lg font-semibold">
-              Ajouter au panier
-            </Text>
+            <View className="flex-row items-center justify-between w-full px-6">
+              <Text className="text-white text-xl font-bold">
+                Ajouter au panier
+              </Text>
+              <View className="bg-white/20 rounded-xl px-4 py-2">
+                <Text className="text-white text-xl font-black">
+                  {totalPrice.toFixed(2)} €
+                </Text>
+              </View>
+            </View>
           </TouchableOpacity>
+
+          {!canAddToCart && (
+            <Text className="text-error-600 text-sm text-center mt-3 font-medium">
+              ⚠️ Sélectionnez toutes les options requises
+            </Text>
+          )}
         </View>
       )}
     </View>
