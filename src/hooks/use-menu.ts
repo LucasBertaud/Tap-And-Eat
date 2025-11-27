@@ -7,9 +7,6 @@ import {
 } from "@/src/store/slices/menuSlice";
 import { useEffect } from "react";
 
-/**
- * Hook personnalisé pour accéder au state Redux du menu
- */
 export function useMenu() {
   const dispatch = useAppDispatch();
   const {
@@ -21,7 +18,6 @@ export function useMenu() {
     error,
   } = useAppSelector((state) => state.menu);
 
-  // Charger les catégories au montage
   useEffect(() => {
     if (categories.length === 0) {
       dispatch(fetchCategories());
@@ -29,7 +25,6 @@ export function useMenu() {
   }, [dispatch, categories.length]);
 
   return {
-    // State
     categories,
     filteredCategories,
     selectedCategoryId,
@@ -37,7 +32,6 @@ export function useMenu() {
     isLoading,
     error,
 
-    // Actions
     filterByCategory: (categoryId: string | null) => {
       dispatch(selectCategory(categoryId));
     },

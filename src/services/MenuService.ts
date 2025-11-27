@@ -6,13 +6,7 @@ import type {
   ProductWithOptions,
 } from "@/src/models";
 
-/**
- * MenuService - Gère les appels API pour le menu
- */
 export class MenuService {
-  /**
-   * Récupère toutes les catégories actives
-   */
   async getCategories(): Promise<Category[]> {
     const { data, error } = await supabase
       .from("categories")
@@ -28,9 +22,6 @@ export class MenuService {
     return data || [];
   }
 
-  /**
-   * Récupère tous les produits disponibles d'une catégorie
-   */
   async getProductsByCategory(categoryId: string): Promise<Product[]> {
     const { data, error } = await supabase
       .from("products")
@@ -47,9 +38,6 @@ export class MenuService {
     return data || [];
   }
 
-  /**
-   * Récupère toutes les catégories avec leurs produits
-   */
   async getCategoriesWithProducts(): Promise<CategoryWithProducts[]> {
     const { data, error } = await supabase
       .from("categories")
@@ -67,7 +55,6 @@ export class MenuService {
       throw error;
     }
 
-    // Filtrer les produits disponibles et trier après récupération
     const categoriesWithProducts = (data || []).map((category) => ({
       ...category,
       products: (category.products || [])
@@ -78,13 +65,9 @@ export class MenuService {
     return categoriesWithProducts as CategoryWithProducts[];
   }
 
-  /**
-   * Récupère un produit avec ses options
-   */
   async getProductWithOptions(
     productId: string
   ): Promise<ProductWithOptions | null> {
-    // Récupère le produit
     const { data: product, error: productError } = await supabase
       .from("products")
       .select("*")
@@ -96,7 +79,6 @@ export class MenuService {
       return null;
     }
 
-    // Récupère les groupes d'options liés au produit
     const { data: productOptionGroups, error: pogError } = await supabase
       .from("product_option_groups")
       .select("option_group_id, display_order")
@@ -107,7 +89,6 @@ export class MenuService {
       return product as ProductWithOptions;
     }
 
-    // Récupère les détails des groupes d'options et leurs options
     const optionGroupIds = productOptionGroups.map(
       (pog) => pog.option_group_id
     );
@@ -121,7 +102,6 @@ export class MenuService {
       return product as ProductWithOptions;
     }
 
-    // Récupère toutes les options pour ces groupes
     const { data: options, error: optionsError } = await supabase
       .from("options")
       .select("*")
@@ -133,13 +113,11 @@ export class MenuService {
       return product as ProductWithOptions;
     }
 
-    // Associe les options à leurs groupes
     const optionGroupsWithOptions = optionGroups.map((og) => ({
       ...og,
       options: (options || []).filter((opt) => opt.option_group_id === og.id),
     }));
 
-    // Trie les groupes selon l'ordre défini dans product_option_groups
     const sortedOptionGroups = optionGroupsWithOptions.sort((a, b) => {
       const orderA =
         productOptionGroups.find((pog) => pog.option_group_id === a.id)
@@ -156,9 +134,6 @@ export class MenuService {
     } as ProductWithOptions;
   }
 
-  /**
-   * Recherche de produits par nom
-   */
   async searchProducts(query: string): Promise<Product[]> {
     const { data, error } = await supabase
       .from("products")

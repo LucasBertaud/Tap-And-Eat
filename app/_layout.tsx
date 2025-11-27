@@ -20,12 +20,18 @@ function RootNavigator() {
     if (isLoading) return;
 
     const inAuthGroup = segments[0] === "(tabs)";
+    const inProductDetail = segments[0] === "product";
 
     if (!isLoggedIn && inAuthGroup) {
       // Rediriger vers login si déconnecté
       router.replace("/login");
-    } else if (isLoggedIn && !inAuthGroup) {
-      // Rediriger vers home si connecté
+    } else if (
+      isLoggedIn &&
+      !inAuthGroup &&
+      !inProductDetail &&
+      segments[0] !== undefined
+    ) {
+      // Rediriger vers home si connecté (sauf si on est sur product detail)
       router.replace("/(tabs)");
     }
   }, [isLoggedIn, segments, isLoading]);
@@ -34,6 +40,7 @@ function RootNavigator() {
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="login" options={{ headerShown: false }} />
+      <Stack.Screen name="product/[id]" options={{ headerShown: false }} />
       <Stack.Screen name="+not-found" />
     </Stack>
   );

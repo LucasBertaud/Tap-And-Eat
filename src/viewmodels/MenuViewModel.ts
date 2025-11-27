@@ -27,16 +27,10 @@ class MenuViewModel {
     }
   }
 
-  /**
-   * Filtre les produits par catégorie
-   */
   filterByCategory(categoryId: string | null): void {
     this.dispatch(selectCategory(categoryId));
   }
 
-  /**
-   * Recherche de produits par nom
-   */
   searchProducts(query: string): void {
     this.dispatch(searchProducts(query));
   }
