@@ -48,29 +48,17 @@ jobs:
 
       - name: Build Android APK
         run: |
-          eas build --platform android --profile preview --non-interactive --no-wait
+          eas build --platform android --profile preview --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-
-      - name: Wait for build completion
-        run: |
-          # Wait for the build to complete (max 30 minutes)
-          for i in {1..60}; do
-            status=$(eas build:list --platform android --limit 1 --json | jq -r '.[0].status')
-            echo "Build status: $status"
-            if [ "$status" = "finished" ]; then
-              echo "Build completed successfully!"
-              break
-            elif [ "$status" = "errored" ] || [ "$status" = "canceled" ]; then
-              echo "Build failed with status: $status"
-              exit 1
-            fi
-            sleep 30
-          done
 
       - name: Download APK
         run: |
           build_url=$(eas build:list --platform android --limit 1 --json | jq -r '.[0].artifacts.buildUrl')
+          if [ "$build_url" = "null" ] || [ -z "$build_url" ]; then
+            echo "No build URL found"
+            exit 1
+          fi
           curl -L -o app-release.apk "$build_url"
 
       - name: Upload APK artifact
