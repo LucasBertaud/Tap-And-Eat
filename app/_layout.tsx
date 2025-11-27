@@ -1,62 +1,59 @@
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
-import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import "react-native-reanimated";
+import { DefaultTheme, ThemeProvider } from '@react-navigation/native'
+import { useFonts } from 'expo-font'
+import { Stack, useRouter, useSegments } from 'expo-router'
+import { StatusBar } from 'expo-status-bar'
+import { useEffect } from 'react'
+import 'react-native-reanimated'
+import { Provider } from 'react-redux'
 
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { SplashScreenController } from '@/src/components/splash-screen-controller'
+import { useAuth } from '@/src/hooks/use-auth-redux'
+import { store } from '@/src/store'
 
-export const unstable_settings = {
-  anchor: "(tabs)",
-};
+function RootNavigator() {
+  const { isLoggedIn, isLoading } = useAuth()
+  const segments = useSegments()
+  const router = useRouter()
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
+  useEffect(() => {
+    if (isLoading) return
+
+    const inAuthGroup = segments[0] === '(tabs)'
+
+    if (!isLoggedIn && inAuthGroup) {
+      // Rediriger vers login si déconnecté
+      router.replace('/login')
+    } else if (isLoggedIn && !inAuthGroup) {
+      // Rediriger vers home si connecté
+      router.replace('/(tabs)')
+    }
+  }, [isLoggedIn, segments, isLoading])
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="product/[id]"
-          options={{
-            headerShown: true,
-            title: "Détails du produit",
-            presentation: "card",
-          }}
-        />
-        <Stack.Screen
-          name="checkout"
-          options={{
-            headerShown: true,
-            title: "Validation",
-            presentation: "card",
-          }}
-        />
-        <Stack.Screen
-          name="payment"
-          options={{
-            headerShown: true,
-            title: "Paiement",
-            presentation: "card",
-          }}
-        />
-        <Stack.Screen
-          name="confirmation"
-          options={{
-            headerShown: false,
-            presentation: "fullScreenModal",
-          }}
-        />
-        <Stack.Screen
-          name="modal"
-          options={{ presentation: "modal", title: "Modal" }}
-        />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
-  );
+    <Stack>
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="login" options={{ headerShown: false }} />
+      <Stack.Screen name="+not-found" />
+    </Stack>
+  )
+}
+
+export default function RootLayout() {
+  const [loaded] = useFonts({
+    SpaceMono: require('../src/assets/fonts/SpaceMono-Regular.ttf'),
+  })
+
+  if (!loaded) {
+    return null
+  }
+
+  return (
+    <Provider store={store}>
+      <ThemeProvider value={DefaultTheme}>
+        <SplashScreenController />
+        <RootNavigator />
+        <StatusBar style="auto" />
+      </ThemeProvider>
+    </Provider>
+  )
 }

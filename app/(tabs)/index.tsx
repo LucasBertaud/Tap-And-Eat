@@ -1,10 +1,8 @@
-import { MenuListView } from "@/views";
-import React from "react";
+import HomeView from '@/src/views/HomeView'
 
 /**
- * Route: /(tabs)/index (Home)
- * US1: Parcourir le menu
+ * Home Screen
  */
 export default function HomeScreen() {
-  return <MenuListView />;
+  return <HomeView />
 }
