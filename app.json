@@ -8,10 +8,10 @@
     "scheme": "tapandeat",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "owner": "lucasbertaud",
+    "owner": "gunride56",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.lucasbertaud.tapandeat",
+      "bundleIdentifier": "com.gunride56.tapandeat",
       "buildNumber": "1"
     },
     "android": {
@@ -23,7 +23,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.lucasbertaud.tapandeat",
+      "package": "com.gunride56.tapandeat",
       "versionCode": 1
     },
     "web": {
@@ -49,6 +49,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "e32ffb18-2714-4d52-ac96-51bca67040c7"
+      }
     }
   }
 }

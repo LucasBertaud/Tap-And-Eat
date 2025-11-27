@@ -40,6 +40,12 @@ jobs:
           echo "EXPO_PUBLIC_SUPABASE_URL=${{ secrets.EXPO_PUBLIC_SUPABASE_URL }}" >> .env
           echo "EXPO_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.EXPO_PUBLIC_SUPABASE_ANON_KEY }}" >> .env
 
+      - name: Configure EAS
+        run: |
+          eas init --id ${{ secrets.EXPO_PROJECT_ID }} --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
       - name: Build Android APK
         run: |
           eas build --platform android --profile preview --non-interactive --no-wait
@@ -103,6 +109,12 @@ jobs:
         run: |
           echo "EXPO_PUBLIC_SUPABASE_URL=${{ secrets.EXPO_PUBLIC_SUPABASE_URL }}" >> .env
           echo "EXPO_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.EXPO_PUBLIC_SUPABASE_ANON_KEY }}" >> .env
+
+      - name: Configure EAS
+        run: |
+          eas init --id ${{ secrets.EXPO_PROJECT_ID }} --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
       - name: Build iOS IPA
         run: |
