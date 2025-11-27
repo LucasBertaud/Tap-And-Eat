@@ -43,7 +43,7 @@ export const Button = ({
 
   return (
     <TouchableOpacity
-      className={`w-full h-16 rounded-lg items-center justify-center shadow-md ${getVariantClasses()} ${
+      className={`w-full md:h-20 h-16 rounded-lg items-center justify-center shadow-md ${getVariantClasses()} ${
         isDisabled ? "opacity-50" : ""
       }`}
       disabled={isDisabled}
@@ -52,10 +52,11 @@ export const Button = ({
     >
       {loading ? (
         <ActivityIndicator
+          size="large"
           color={variant === "outline" ? "#EA580C" : "#FFFFFF"}
         />
       ) : (
-        <Text className={`text-lg font-semibold ${getTextClasses()}`}>
+        <Text className={`md:text-xl text-lg font-semibold ${getTextClasses()}`}>
           {title}
         </Text>
       )}

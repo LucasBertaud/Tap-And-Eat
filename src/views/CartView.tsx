@@ -99,7 +99,9 @@ export const CartView: React.FC = () => {
           <ScrollView
             className="flex-1 px-4 py-4"
             showsVerticalScrollIndicator={false}
+            contentContainerClassName="items-center"
           >
+            <View className="w-full">
             {cartItems.map((item) => (
               <CartItemCard
                 key={item.id}
@@ -110,12 +112,14 @@ export const CartView: React.FC = () => {
               />
             ))}
 
-            {/* Espacement en bas pour le bouton fixe */}
-            <View className="h-24" />
+              {/* Espacement en bas pour le bouton fixe */}
+              <View className="h-24" />
+            </View>
           </ScrollView>
 
           {/* Barre de validation en bas (fixe) */}
           <View className="bg-white border-t border-secondary-200 px-4 pt-4 pb-8">
+            <View className="w-full max-w-3xl mx-auto">
             {/* Récapitulatif */}
             <View className="flex-row justify-between items-center mb-4">
               <Text className="text-base text-secondary-600">Total</Text>
@@ -137,6 +141,7 @@ export const CartView: React.FC = () => {
                 <Ionicons name="arrow-forward" size={20} color="white" />
               </View>
             </TouchableOpacity>
+            </View>
           </View>
         </>
       )}

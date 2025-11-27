@@ -109,8 +109,9 @@ export function ProductDetailView({ productId }: ProductDetailViewProps) {
     >
       <Navbar title="Détails du produit" showBackButton />
 
-      <ScrollView className="flex-1">
-        <View className="w-full h-80 bg-gray-200">
+      <ScrollView className="flex-1" contentContainerClassName="items-center">
+        <View className="w-full">
+          <View className="w-full md:h-[42rem] h-80 bg-gray-200">
           {product.image_url ? (
             <Image
               source={{ uri: product.image_url }}
@@ -122,9 +123,9 @@ export function ProductDetailView({ productId }: ProductDetailViewProps) {
               <Text className="text-8xl">🍔</Text>
             </View>
           )}
-        </View>
+          </View>
 
-        <View className="bg-white p-6">
+          <View className="bg-white p-6 md:p-8">
           <Text className="text-2xl font-bold text-gray-900 mb-2">
             {product.name}
           </Text>
@@ -138,10 +139,10 @@ export function ProductDetailView({ productId }: ProductDetailViewProps) {
           <Text className="text-3xl font-bold text-primary-500">
             {product.base_price.toFixed(2)} €
           </Text>
-        </View>
+          </View>
 
-        {product.ingredients && product.ingredients.length > 0 && (
-          <View className="bg-white mt-2 p-6">
+          {product.ingredients && product.ingredients.length > 0 && (
+            <View className="bg-white mt-2 p-6 md:p-8">
             <Text className="text-lg font-semibold text-secondary-900 mb-3">
               Ingrédients
             </Text>
@@ -157,12 +158,12 @@ export function ProductDetailView({ productId }: ProductDetailViewProps) {
                 </View>
               ))}
             </View>
-          </View>
-        )}
+            </View>
+          )}
 
-        {/* Personnalisation */}
-        {product.option_groups && product.option_groups.length > 0 && (
-          <View className="bg-white mt-2 p-6">
+          {/* Personnalisation */}
+          {product.option_groups && product.option_groups.length > 0 && (
+            <View className="bg-white mt-2 p-6 md:p-8">
             <Text className="text-2xl font-bold text-secondary-900 mb-6">
               Personnalisez votre commande
             </Text>
@@ -177,15 +178,17 @@ export function ProductDetailView({ productId }: ProductDetailViewProps) {
                 }
               />
             ))}
-          </View>
-        )}
+            </View>
+          )}
 
-        <View className="h-32" />
+          <View className="h-32" />
+        </View>
       </ScrollView>
 
       {/* Barre d'ajout au panier fixe en bas */}
       {product.is_available && (
         <View className="bg-white border-t border-secondary-200 px-6 pt-4 pb-8 shadow-lg">
+          <View className="w-full max-w-4xl mx-auto">
           {/* Sélecteur de quantité */}
           <View className="flex-row items-center justify-between mb-4">
             <Text className="text-lg font-bold text-secondary-900">
@@ -238,6 +241,7 @@ export function ProductDetailView({ productId }: ProductDetailViewProps) {
               ⚠️ Sélectionnez toutes les options requises
             </Text>
           )}
+          </View>
         </View>
       )}
     </ScreenWrapper>

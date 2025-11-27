@@ -19,22 +19,22 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
   const itemTotal = calculateItemTotal(item);
 
   return (
-    <View className="bg-white rounded-xl p-4 mb-3 shadow-sm border border-secondary-100">
+    <View className="bg-white rounded-xl p-4 md:p-6 mb-3 shadow-sm border border-secondary-100">
       {/* En-tête avec image et infos */}
       <View className="flex-row mb-3">
         {/* Image du produit */}
         <Image
           source={{ uri: item.product.image_url || undefined }}
-          className="w-20 h-20 rounded-lg bg-secondary-100"
+          className="md:w-28 md:h-28 w-20 h-20 rounded-lg bg-secondary-100"
           resizeMode="cover"
         />
 
         {/* Infos produit */}
-        <View className="flex-1 ml-3">
-          <Text className="text-base font-semibold text-secondary-900 mb-1">
+        <View className="flex-1 ml-3 md:ml-4">
+          <Text className="md:text-xl text-base font-semibold text-secondary-900 mb-1">
             {item.product.name}
           </Text>
-          <Text className="text-sm text-secondary-600">
+          <Text className="md:text-base text-sm text-secondary-600">
             {item.product.base_price.toFixed(2)} €
           </Text>
         </View>
@@ -79,12 +79,12 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
           >
             <Ionicons
               name="remove-circle"
-              size={28}
+              size={32}
               color={item.quantity === 1 ? "#EF4444" : "#F97316"}
             />
           </TouchableOpacity>
 
-          <Text className="text-base font-semibold text-secondary-900 mx-3 min-w-[24px] text-center">
+          <Text className="md:text-xl text-base font-semibold text-secondary-900 mx-3 md:mx-4 min-w-[24px] text-center">
             {item.quantity}
           </Text>
 
@@ -93,13 +93,13 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
             className="p-2"
             activeOpacity={0.7}
           >
-            <Ionicons name="add-circle" size={28} color="#F97316" />
+            <Ionicons name="add-circle" size={32} color="#F97316" />
           </TouchableOpacity>
         </View>
 
         {/* Prix total de l'item */}
-        <View className="bg-primary-50 px-4 py-2 rounded-full">
-          <Text className="text-lg font-bold text-primary-600">
+        <View className="bg-primary-50 px-4 md:px-6 py-2 rounded-full">
+          <Text className="md:text-xl text-lg font-bold text-primary-600">
             {itemTotal.toFixed(2)} €
           </Text>
         </View>

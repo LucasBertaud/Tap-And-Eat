@@ -15,8 +15,27 @@ export function TabsLayoutView() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: "#F97316",
+        tabBarInactiveTintColor: "#6B7280",
         headerShown: false,
         tabBarButton: HapticTab,
+        tabBarStyle: {
+          height: 85,
+          paddingBottom: 20,
+          paddingTop: 10,
+          backgroundColor: "#FFFFFF",
+          borderTopWidth: 1,
+          borderTopColor: "#E5E7EB",
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: -2 },
+          shadowOpacity: 0.1,
+          shadowRadius: 10,
+          elevation: 10,
+        },
+        tabBarLabelStyle: {
+          fontSize: 15,
+          fontWeight: "600",
+          marginTop: 5,
+        },
       }}
     >
       <Tabs.Screen
@@ -24,7 +43,7 @@ export function TabsLayoutView() {
         options={{
           title: "Menu",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="house.fill" color={color} />
+            <IconSymbol size={32} name="house.fill" color={color} />
           ),
         }}
       />
@@ -34,13 +53,13 @@ export function TabsLayoutView() {
           title: "Panier",
           tabBarIcon: ({ color }) => (
             <View>
-              <Ionicons name="cart" size={28} color={color} />
+              <Ionicons name="cart" size={32} color={color} />
               {cartItemCount > 0 && (
                 <View
-                  style={{ minWidth: 14, height: 14, borderRadius: 10 }}
-                  className="absolute -top-1 -right-2 bg-primary-500 min-w-5 h-5 items-center justify-center px-1"
+                  style={{ minWidth: 24, height: 24, borderRadius: 12 }}
+                  className="absolute -top-2 -right-3 bg-primary-500 items-center justify-center px-1.5 border-2 border-white shadow-lg"
                 >
-                  <Text className="text-white text-xs font-bold">
+                  <Text className="text-white text-sm font-extrabold">
                     {cartItemCount > 99 ? "99+" : cartItemCount}
                   </Text>
                 </View>

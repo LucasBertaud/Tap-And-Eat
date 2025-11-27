@@ -122,9 +122,9 @@ export default function MenuView() {
       />
 
       {/* Barre de recherche */}
-      <View className="bg-white px-4 pb-2 border-b border-gray-200">
-        {/* Barre de recherche */}
-        <View className="flex-row items-center bg-gray-100 rounded-lg px-4 py-3 mb-4">
+      <View className="bg-white px-4 pt-4 pb-2 border-b border-gray-200">
+        {/* Barre de recherche avec max-width pour tablette */}
+        <View className="flex-row items-center bg-gray-100 rounded-lg px-4 py-3 mb-4 mx-auto w-full max-w-4xl">
           <Ionicons name="search" size={20} color="#9CA3AF" />
           <TextInput
             placeholder="Rechercher un produit..."
@@ -141,11 +141,12 @@ export default function MenuView() {
         </View>
 
         {/* Liste des catégories (horizontale) */}
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          className="mb-2"
-        >
+        <View className="mx-auto w-full max-w-4xl">
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            className="mb-2"
+          >
           <TouchableOpacity
             onPress={() => filterByCategory(null)}
             className={`mr-4 items-center ${!selectedCategoryId ? "opacity-100" : "opacity-70"}`}
@@ -181,7 +182,8 @@ export default function MenuView() {
               onPress={() => handleCategoryPress(category.id)}
             />
           ))}
-        </ScrollView>
+          </ScrollView>
+        </View>
       </View>
 
       {/* Liste des produits */}
@@ -208,8 +210,9 @@ export default function MenuView() {
             </Text>
           </View>
         ) : (
-          filteredCategories.map((category) => (
-            <View key={category.id} className="mt-6">
+          <View className="mx-auto w-full max-w-4xl">
+            {filteredCategories.map((category) => (
+              <View key={category.id} className="mt-6">
               {/* Titre de la catégorie */}
               <View className="flex-row items-center mb-4">
                 <View className="flex-1 h-px bg-gray-200" />
@@ -234,7 +237,8 @@ export default function MenuView() {
                 />
               ))}
             </View>
-          ))
+            ))}
+          </View>
         )}
 
         {/* Espace en bas pour le scroll */}

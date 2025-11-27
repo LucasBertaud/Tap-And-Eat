@@ -132,12 +132,14 @@ const AuthView = () => {
           contentContainerClassName="flex-grow"
           keyboardShouldPersistTaps="handled"
         >
-          <View className="flex-1 px-12 py-20 justify-center">
-            {/* Header */}
-            <AuthHeader isSignUpMode={viewModel.isSignUpMode} />
+          <View className="flex-1 px-12 py-20 justify-center items-center">
+            {/* Conteneur centré avec largeur max pour tablette */}
+            <View className="w-full max-w-2xl">
+              {/* Header */}
+              <AuthHeader isSignUpMode={viewModel.isSignUpMode} />
 
-            {/* Formulaire */}
-            <View className="w-full max-w-xl mx-auto">
+              {/* Formulaire */}
+              <View className="w-full">
               {/* Champ Nom complet (uniquement inscription) */}
               {viewModel.isSignUpMode && (
                 <InputForm
@@ -229,8 +231,9 @@ const AuthView = () => {
               />
             </View>
 
-            {/* Footer */}
-            <AuthFooter />
+              {/* Footer */}
+              <AuthFooter />
+            </View>
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

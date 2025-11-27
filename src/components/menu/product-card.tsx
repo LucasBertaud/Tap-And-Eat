@@ -14,12 +14,12 @@ export function ProductCard({ product, onPress }: ProductCardProps) {
   return (
     <TouchableOpacity
       onPress={onPress}
-      className="bg-white rounded-xl shadow-sm mb-4 overflow-hidden h-40"
+      className="bg-white rounded-xl shadow-sm mb-4 overflow-hidden md:h-48 h-40"
       activeOpacity={0.7}
     >
       <View className="flex-row">
         {/* Image du produit */}
-        <View className="w-28 h-full">
+        <View className="md:w-40 w-28 h-full">
           {product.image_url ? (
             <Image
               source={{ uri: product.image_url }}
@@ -34,9 +34,9 @@ export function ProductCard({ product, onPress }: ProductCardProps) {
         </View>
 
         {/* Informations du produit */}
-        <View className="flex-1 p-4">
+        <View className="flex-1 p-4 md:p-6">
           <Text
-            className="text-lg font-bold text-gray-900 mb-1"
+            className="md:text-2xl text-lg font-bold text-gray-900 mb-1"
             numberOfLines={2}
           >
             {product.name}
@@ -58,7 +58,7 @@ export function ProductCard({ product, onPress }: ProductCardProps) {
 
           {/* Prix */}
           <View className="flex-row items-center justify-between">
-            <Text className="text-xl font-bold text-primary-500">
+            <Text className="md:text-2xl text-xl font-bold text-primary-500">
               {product.base_price.toFixed(2)} €
             </Text>
             {!product.is_available && (
