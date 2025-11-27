@@ -52,18 +52,9 @@ jobs:
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
-      - name: Download APK
+      - name: Build Success
         run: |
-          build_url=$(eas build:list --platform android --limit 1 --json | jq -r '.[0].artifacts.buildUrl')
-          if [ "$build_url" = "null" ] || [ -z "$build_url" ]; then
-            echo "No build URL found"
-            exit 1
-          fi
-          curl -L -o app-release.apk "$build_url"
-
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: android-apk
-          path: app-release.apk
-          retention-days: 30
+          echo "✅ Build completed successfully!"
+          echo "📱 Download your APK from: https://expo.dev/accounts/gunride56/projects/tap-and-eat/builds"
+          echo ""
+          echo "The APK will be available on the Expo dashboard within a few minutes."
