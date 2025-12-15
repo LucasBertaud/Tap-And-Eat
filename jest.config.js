@@ -12,4 +12,7 @@ module.exports = {
     "!src/**/*.d.ts",
     "!src/**/__tests__/**",
   ],
+  testEnvironment: "node",
+  moduleFileExtensions: ["ts", "tsx", "js", "jsx"],
+  testMatch: ["**/__tests__/**/*.test.(ts|tsx|js)"],
 };
