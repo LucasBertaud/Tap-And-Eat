@@ -8,4 +8,3 @@ export { PaymentSuccessView } from "./PaymentSuccessView";
 export { PaymentView } from "./PaymentView";
 export { ProductDetailView } from "./ProductDetailView";
 export { TabsLayoutView } from "./TabsLayoutView";
-

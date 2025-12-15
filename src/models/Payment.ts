@@ -20,7 +20,7 @@ export interface PaymentState {
 }
 
 export function formatCardNumber(cardNumber: string): string {
-  const cleaned = cardNumber.replace(/\s+/g, '');
+  const cleaned = cardNumber.replace(/\s+/g, "");
   const match = cleaned.match(/.{1,4}/g);
-  return match ? match.join(' ') : cleaned;
+  return match ? match.join(" ") : cleaned;
 }

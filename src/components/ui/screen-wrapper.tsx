@@ -4,7 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 interface ScreenWrapperProps {
   children: ReactNode;
   className?: string;
-  edges?: Array<"top" | "bottom" | "left" | "right">;
+  edges?: ("top" | "bottom" | "left" | "right")[];
 }
 
 /**

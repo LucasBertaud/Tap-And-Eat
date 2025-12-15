@@ -9,24 +9,27 @@ export const usePaymentViewModel = () => {
   const totalAmount = useAppSelector(selectCartTotal);
 
   const [cardInfo, setCardInfo] = useState<CreditCardInfo>({
-    number: '',
-    expiryMonth: '',
-    expiryYear: '',
-    cvv: '',
-    holderName: '',
+    number: "",
+    expiryMonth: "",
+    expiryYear: "",
+    cvv: "",
+    holderName: "",
   });
 
   const [isProcessing, setIsProcessing] = useState(false);
   const [lastResult, setLastResult] = useState<PaymentResult | null>(null);
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
-  const updateCardInfo = useCallback((field: keyof CreditCardInfo, value: string) => {
-    setCardInfo(prev => ({ ...prev, [field]: value }));
+  const updateCardInfo = useCallback(
+    (field: keyof CreditCardInfo, value: string) => {
+      setCardInfo((prev) => ({ ...prev, [field]: value }));
 
-    if (validationErrors.length > 0) {
-      setValidationErrors([]);
-    }
-  }, [validationErrors.length]);
+      if (validationErrors.length > 0) {
+        setValidationErrors([]);
+      }
+    },
+    [validationErrors.length]
+  );
 
   const validateForm = useCallback((): boolean => {
     const validation = paymentService.validateCardInfo(cardInfo);
@@ -41,7 +44,7 @@ export const usePaymentViewModel = () => {
     if (!isValid) {
       return {
         success: false,
-        errorMessage: 'Veuillez corriger les erreurs du formulaire',
+        errorMessage: "Veuillez corriger les erreurs du formulaire",
         amount: totalAmount,
       };
     }
@@ -61,7 +64,8 @@ export const usePaymentViewModel = () => {
     } catch (error) {
       const errorResult: PaymentResult = {
         success: false,
-        errorMessage: error instanceof Error ? error.message : 'Erreur inconnue',
+        errorMessage:
+          error instanceof Error ? error.message : "Erreur inconnue",
         amount: totalAmount,
       };
       setLastResult(errorResult);
@@ -73,11 +77,11 @@ export const usePaymentViewModel = () => {
 
   const resetPayment = useCallback(() => {
     setCardInfo({
-      number: '',
-      expiryMonth: '',
-      expiryYear: '',
-      cvv: '',
-      holderName: '',
+      number: "",
+      expiryMonth: "",
+      expiryYear: "",
+      cvv: "",
+      holderName: "",
     });
     setIsProcessing(false);
     setLastResult(null);

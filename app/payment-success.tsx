@@ -1,3 +1,3 @@
-import { PaymentSuccessView } from '../src/views/PaymentSuccessView';
+import { PaymentSuccessView } from "../src/views/PaymentSuccessView";
 
 export default PaymentSuccessView;

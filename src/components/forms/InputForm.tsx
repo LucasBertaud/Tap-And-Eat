@@ -34,18 +34,18 @@ export const InputForm = ({
 
   return (
     <View className="mb-6">
-      <Text className="md:text-xl text-lg font-medium text-text-primary mb-2">
+      <Text className="mb-2 text-lg font-medium text-text-primary md:text-xl">
         {label} {required && <Text className="text-error-500">*</Text>}
       </Text>
       <View className="relative">
         <TextInput
-          className={`w-full md:h-20 h-16 md:px-8 px-6 bg-surface border ${
+          className={`h-16 w-full border bg-surface px-6 md:h-20 md:px-8 ${
             error
               ? "border-error-500"
               : isFocused
                 ? "border-primary-500"
                 : "border-border-default"
-          } rounded-lg md:text-xl text-lg ${isPassword ? "pr-14" : ""}`}
+          } rounded-lg text-lg md:text-xl ${isPassword ? "pr-14" : ""}`}
           value={value}
           onChangeText={onChangeText}
           onFocus={() => setIsFocused(true)}
@@ -56,7 +56,7 @@ export const InputForm = ({
         />
         {isPassword && (
           <TouchableOpacity
-            className="absolute md:right-6 md:top-6 right-4 top-4"
+            className="absolute right-4 top-4 md:right-6 md:top-6"
             onPress={() => setShowPassword(!showPassword)}
           >
             <MaterialIcons
@@ -68,8 +68,8 @@ export const InputForm = ({
         )}
       </View>
       {error ? (
-        <View className="flex-row items-center mt-2">
-          <Text className="text-sm text-error-500 ml-1">{error}</Text>
+        <View className="mt-2 flex-row items-center">
+          <Text className="ml-1 text-sm text-error-500">{error}</Text>
         </View>
       ) : null}
     </View>

@@ -62,21 +62,21 @@ export const CartView: React.FC = () => {
 
       {isEmpty ? (
         <View className="flex-1 items-center justify-center px-6">
-          <View className="bg-secondary-100 rounded-full p-8 mb-4">
+          <View className="mb-4 rounded-full bg-secondary-100 p-8">
             <Ionicons name="cart-outline" size={64} color="#9CA3AF" />
           </View>
-          <Text className="text-xl font-semibold text-secondary-900 mb-2">
+          <Text className="mb-2 text-xl font-semibold text-secondary-900">
             Votre panier est vide
           </Text>
-          <Text className="text-base text-secondary-600 text-center mb-6">
+          <Text className="mb-6 text-center text-base text-secondary-600">
             Ajoutez des produits pour commencer votre commande
           </Text>
           <TouchableOpacity
             onPress={() => router.push("/(tabs)")}
-            className="bg-primary-500 px-8 py-4 rounded-full"
+            className="rounded-full bg-primary-500 px-8 py-4"
             activeOpacity={0.8}
           >
-            <Text className="text-white text-base font-semibold px-4">
+            <Text className="px-4 text-base font-semibold text-white">
               Voir le menu
             </Text>
           </TouchableOpacity>
@@ -103,9 +103,9 @@ export const CartView: React.FC = () => {
             </View>
           </ScrollView>
 
-          <View className="bg-white border-t border-secondary-200 px-4 pt-4 pb-8">
-            <View className="w-full max-w-3xl mx-auto">
-              <View className="flex-row justify-between items-center mb-4">
+          <View className="border-t border-secondary-200 bg-white px-4 pb-8 pt-4">
+            <View className="mx-auto w-full max-w-3xl">
+              <View className="mb-4 flex-row items-center justify-between">
                 <Text className="text-base text-secondary-600">Total</Text>
                 <Text className="text-2xl font-bold text-secondary-900">
                   {totalPrice.toFixed(2)} €
@@ -114,11 +114,11 @@ export const CartView: React.FC = () => {
 
               <TouchableOpacity
                 onPress={handleCheckout}
-                className="bg-primary-500 rounded-full py-4 items-center"
+                className="items-center rounded-full bg-primary-500 py-4"
                 activeOpacity={0.8}
               >
                 <View className="flex-row items-center">
-                  <Text className="text-white text-lg font-bold mr-2">
+                  <Text className="mr-2 text-lg font-bold text-white">
                     Commander
                   </Text>
                   <Ionicons name="arrow-forward" size={20} color="white" />

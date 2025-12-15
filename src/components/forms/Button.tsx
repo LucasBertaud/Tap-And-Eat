@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from "react";
 import {
   Animated,
   Easing,
@@ -60,14 +60,14 @@ export const Button = ({
 
   const spin = spinValue.interpolate({
     inputRange: [0, 1],
-    outputRange: ['0deg', '360deg'],
+    outputRange: ["0deg", "360deg"],
   });
 
   const isDisabled = disabled || loading;
 
   return (
     <TouchableOpacity
-      className={`w-full md:h-20 h-16 rounded-lg items-center justify-center shadow-md ${getVariantClasses()} ${
+      className={`h-16 w-full items-center justify-center rounded-lg shadow-md md:h-20 ${getVariantClasses()} ${
         isDisabled ? "opacity-50" : ""
       }`}
       disabled={isDisabled}
@@ -88,12 +88,16 @@ export const Button = ({
               marginRight: 8,
             }}
           />
-          <Text className={`md:text-xl text-lg font-semibold ${getTextClasses()}`}>
+          <Text
+            className={`text-lg font-semibold md:text-xl ${getTextClasses()}`}
+          >
             {title}
           </Text>
         </View>
       ) : (
-        <Text className={`md:text-xl text-lg font-semibold ${getTextClasses()}`}>
+        <Text
+          className={`text-lg font-semibold md:text-xl ${getTextClasses()}`}
+        >
           {title}
         </Text>
       )}

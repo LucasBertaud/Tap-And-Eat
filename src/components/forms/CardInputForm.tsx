@@ -1,4 +1,9 @@
-import { formatCardNumber, validateCardNumber, validateCVV, validateExpiryDate } from "@/src/utils/payment/validation";
+import {
+  formatCardNumber,
+  validateCardNumber,
+  validateCVV,
+  validateExpiryDate,
+} from "@/src/utils/payment/validation";
 import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import { InputForm } from "./InputForm";
@@ -30,29 +35,33 @@ export const CardInputForm = ({
   onHolderNameChange,
   validationErrors,
 }: CardInputFormProps) => {
-  const [cardNumberError, setCardNumberError] = useState<string>('');
-  const [expiryMonthError, setExpiryMonthError] = useState<string>('');
-  const [expiryYearError, setExpiryYearError] = useState<string>('');
-  const [cvvError, setCvvError] = useState<string>('');
+  const [cardNumberError, setCardNumberError] = useState<string>("");
+  const [expiryMonthError, setExpiryMonthError] = useState<string>("");
+  const [expiryYearError, setExpiryYearError] = useState<string>("");
+  const [cvvError, setCvvError] = useState<string>("");
 
   // Validation en temps réel du numéro de carte
   useEffect(() => {
     if (cardNumber.length > 0) {
-      const cleaned = cardNumber.replace(/\s+/g, '');
+      const cleaned = cardNumber.replace(/\s+/g, "");
       if (cleaned.length > 0 && !/^\d+$/.test(cleaned)) {
-        setCardNumberError('Le numéro de carte ne doit contenir que des chiffres');
+        setCardNumberError(
+          "Le numéro de carte ne doit contenir que des chiffres"
+        );
       } else if (cleaned.length >= 13) {
         const validation = validateCardNumber(cleaned);
         if (!validation.isValid) {
-          setCardNumberError(validation.errors?.[0] || 'Numéro de carte invalide');
+          setCardNumberError(
+            validation.errors?.[0] || "Numéro de carte invalide"
+          );
         } else {
-          setCardNumberError('');
+          setCardNumberError("");
         }
       } else {
-        setCardNumberError('');
+        setCardNumberError("");
       }
     } else {
-      setCardNumberError('');
+      setCardNumberError("");
     }
   }, [cardNumber]);
 
@@ -61,26 +70,28 @@ export const CardInputForm = ({
       const validation = validateExpiryDate(expiryMonth, expiryYear);
       if (!validation.isValid) {
         const errors = validation.errors || [];
-        const monthErrors = errors.filter(error =>
-          error.toLowerCase().includes('mois') ||
-          error.toLowerCase().includes('date d\'expiration est requise') ||
-          error.toLowerCase().includes('entre 01 et 12')
+        const monthErrors = errors.filter(
+          (error) =>
+            error.toLowerCase().includes("mois") ||
+            error.toLowerCase().includes("date d'expiration est requise") ||
+            error.toLowerCase().includes("entre 01 et 12")
         );
-        const yearErrors = errors.filter(error =>
-          error.toLowerCase().includes('année') ||
-          error.toLowerCase().includes('date d\'expiration est requise') ||
-          !monthErrors.includes(error)
+        const yearErrors = errors.filter(
+          (error) =>
+            error.toLowerCase().includes("année") ||
+            error.toLowerCase().includes("date d'expiration est requise") ||
+            !monthErrors.includes(error)
         );
 
-        setExpiryMonthError(monthErrors.length > 0 ? monthErrors[0] : '');
-        setExpiryYearError(yearErrors.length > 0 ? yearErrors[0] : '');
+        setExpiryMonthError(monthErrors.length > 0 ? monthErrors[0] : "");
+        setExpiryYearError(yearErrors.length > 0 ? yearErrors[0] : "");
       } else {
-        setExpiryMonthError('');
-        setExpiryYearError('');
+        setExpiryMonthError("");
+        setExpiryYearError("");
       }
     } else {
-      setExpiryMonthError('');
-      setExpiryYearError('');
+      setExpiryMonthError("");
+      setExpiryYearError("");
     }
   }, [expiryMonth, expiryYear]);
 
@@ -88,12 +99,12 @@ export const CardInputForm = ({
     if (cvv.length > 0) {
       const validation = validateCVV(cvv);
       if (!validation.isValid) {
-        setCvvError(validation.errors?.[0] || 'CVV invalide');
+        setCvvError(validation.errors?.[0] || "CVV invalide");
       } else {
-        setCvvError('');
+        setCvvError("");
       }
     } else {
-      setCvvError('');
+      setCvvError("");
     }
   }, [cvv]);
 
@@ -103,17 +114,17 @@ export const CardInputForm = ({
   };
 
   const handleExpiryMonthChange = (value: string) => {
-    const cleaned = value.replace(/\D/g, '').slice(0, 2);
+    const cleaned = value.replace(/\D/g, "").slice(0, 2);
     onExpiryMonthChange(cleaned);
   };
 
   const handleExpiryYearChange = (value: string) => {
-    const cleaned = value.replace(/\D/g, '').slice(0, 4);
+    const cleaned = value.replace(/\D/g, "").slice(0, 4);
     onExpiryYearChange(cleaned);
   };
 
   const handleCvvChange = (value: string) => {
-    const cleaned = value.replace(/\D/g, '').slice(0, 4);
+    const cleaned = value.replace(/\D/g, "").slice(0, 4);
     onCvvChange(cleaned);
   };
 
@@ -179,9 +190,9 @@ export const CardInputForm = ({
       </View>
 
       {validationErrors.length > 0 && (
-        <View className="bg-error-50 border border-error-200 rounded-lg p-4 mb-6">
+        <View className="mb-6 rounded-lg border border-error-200 bg-error-50 p-4">
           {validationErrors.map((error, index) => (
-            <Text key={index} className="text-error-600 text-base mb-1">
+            <Text key={index} className="mb-1 text-base text-error-600">
               • {error}
             </Text>
           ))}

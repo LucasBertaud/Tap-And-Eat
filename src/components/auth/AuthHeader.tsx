@@ -1,7 +1,7 @@
-import { Text, View } from 'react-native'
+import { Text, View } from "react-native";
 
 interface AuthHeaderProps {
-  isSignUpMode: boolean
+  isSignUpMode: boolean;
 }
 
 /**
@@ -10,16 +10,18 @@ interface AuthHeaderProps {
  */
 export const AuthHeader = ({ isSignUpMode }: AuthHeaderProps) => {
   return (
-    <View className="items-center mb-12">
-      <Text className="text-6xl font-bold text-primary-600 mb-4">🍔 Tap & Eat</Text>
-      <Text className="text-xl text-secondary-600">
-        {isSignUpMode ? 'Créer un compte' : 'Bienvenue !'}
+    <View className="mb-12 items-center">
+      <Text className="mb-4 text-6xl font-bold text-primary-600">
+        🍔 Tap & Eat
       </Text>
-      <Text className="text-base text-secondary-500 mt-2 text-center">
+      <Text className="text-xl text-secondary-600">
+        {isSignUpMode ? "Créer un compte" : "Bienvenue !"}
+      </Text>
+      <Text className="mt-2 text-center text-base text-secondary-500">
         {isSignUpMode
-          ? 'Rejoignez-nous pour commander facilement'
-          : 'Connectez-vous pour passer commande'}
+          ? "Rejoignez-nous pour commander facilement"
+          : "Connectez-vous pour passer commande"}
       </Text>
     </View>
-  )
-}
+  );
+};

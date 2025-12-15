@@ -57,9 +57,9 @@ export function TabsLayoutView() {
               {cartItemCount > 0 && (
                 <View
                   style={{ minWidth: 24, height: 24, borderRadius: 12 }}
-                  className="absolute -top-2 -right-3 bg-primary-500 items-center justify-center px-1.5 border-2 border-white shadow-lg"
+                  className="absolute -right-3 -top-2 items-center justify-center border-2 border-white bg-primary-500 px-1.5 shadow-lg"
                 >
-                  <Text className="text-white text-sm font-extrabold">
+                  <Text className="text-sm font-extrabold text-white">
                     {cartItemCount > 99 ? "99+" : cartItemCount}
                   </Text>
                 </View>

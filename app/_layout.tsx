@@ -39,7 +39,7 @@ function RootNavigator() {
     ) {
       router.replace("/(tabs)");
     }
-  }, [isLoggedIn, segments, isLoading]);
+  }, [isLoggedIn, segments, isLoading, router]);
 
   return (
     <Stack>

@@ -75,8 +75,10 @@ export function useMenuViewModel() {
   const viewModel = new MenuViewModel(dispatch, menuState);
 
   useEffect(() => {
-    viewModel.loadMenu();
-  }, []);
+    if (menuState.categories.length === 0) {
+      dispatch(fetchCategories());
+    }
+  }, [dispatch, menuState.categories.length]);
 
   return {
     viewModel,

@@ -1,18 +1,18 @@
-import { Ionicons } from '@expo/vector-icons';
-import React, { useEffect, useRef } from 'react';
-import { Animated, Easing, Text, View } from 'react-native';
+import { Ionicons } from "@expo/vector-icons";
+import React, { useEffect, useRef } from "react";
+import { Animated, Easing, Text, View } from "react-native";
 
 interface LoadingSpinnerProps {
-  size?: 'small' | 'medium' | 'large';
+  size?: "small" | "medium" | "large";
   message?: string;
   color?: string;
   fullScreen?: boolean;
 }
 
 export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
-  size = 'large',
-  message = 'Chargement...',
-  color = '#F97316',
+  size = "large",
+  message = "Chargement...",
+  color = "#F97316",
   fullScreen = false,
 }) => {
   const spinValue = useRef(new Animated.Value(0)).current;
@@ -56,16 +56,16 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
 
   const spin = spinValue.interpolate({
     inputRange: [0, 1],
-    outputRange: ['0deg', '360deg'],
+    outputRange: ["0deg", "360deg"],
   });
 
   const getSize = () => {
     switch (size) {
-      case 'small':
+      case "small":
         return 32;
-      case 'medium':
+      case "medium":
         return 48;
-      case 'large':
+      case "large":
       default:
         return 64;
     }
@@ -81,7 +81,7 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
         }}
       >
         <View
-          className="rounded-full items-center justify-center"
+          className="items-center justify-center rounded-full"
           style={{
             width: iconSize + 20,
             height: iconSize + 20,
@@ -94,17 +94,17 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
 
       {message && (
         <Text
-          className="font-medium mt-4 text-center"
+          className="mt-4 text-center font-medium"
           style={{
-            color: '#6B7280',
-            fontSize: size === 'small' ? 14 : size === 'medium' ? 16 : 18,
+            color: "#6B7280",
+            fontSize: size === "small" ? 14 : size === "medium" ? 16 : 18,
           }}
         >
           {message}
         </Text>
       )}
 
-      <View className="flex-row gap-2 mt-2">
+      <View className="mt-2 flex-row gap-2">
         {[0, 1, 2].map((index) => (
           <Animated.View
             key={index}

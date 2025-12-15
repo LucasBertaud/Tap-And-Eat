@@ -10,12 +10,7 @@ import {
 } from "@/src/utils/auth";
 import { useAuthViewModel } from "@/src/viewmodels";
 import { useState } from "react";
-import {
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  View,
-} from "react-native";
+import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
 
 const AuthView = () => {
   const { showAlert, AlertComponent } = useAlert();
@@ -138,7 +133,7 @@ const AuthView = () => {
           contentContainerClassName="flex-grow"
           keyboardShouldPersistTaps="handled"
         >
-          <View className="flex-1 px-12 py-20 justify-center items-center">
+          <View className="flex-1 items-center justify-center px-12 py-20">
             <View className="w-full max-w-2xl">
               <AuthHeader isSignUpMode={viewModel.isSignUpMode} />
 

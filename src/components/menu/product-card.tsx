@@ -14,20 +14,20 @@ export function ProductCard({ product, onPress }: ProductCardProps) {
   return (
     <TouchableOpacity
       onPress={onPress}
-      className="bg-white rounded-xl shadow-sm mb-4 overflow-hidden md:h-48 h-40"
+      className="mb-4 h-40 overflow-hidden rounded-xl bg-white shadow-sm md:h-48"
       activeOpacity={0.7}
     >
       <View className="flex-row">
         {/* Image du produit */}
-        <View className="md:w-40 w-28 h-full">
+        <View className="h-full w-28 md:w-40">
           {product.image_url ? (
             <Image
               source={{ uri: product.image_url }}
-              className="w-full h-full"
+              className="h-full w-full"
               resizeMode="cover"
             />
           ) : (
-            <View className="w-full h-full bg-gray-200 items-center justify-center">
+            <View className="h-full w-full items-center justify-center bg-gray-200">
               <Text className="text-4xl">🍔</Text>
             </View>
           )}
@@ -36,21 +36,21 @@ export function ProductCard({ product, onPress }: ProductCardProps) {
         {/* Informations du produit */}
         <View className="flex-1 p-4 md:p-6">
           <Text
-            className="md:text-2xl text-lg font-bold text-gray-900 mb-1"
+            className="mb-1 text-lg font-bold text-gray-900 md:text-2xl"
             numberOfLines={2}
           >
             {product.name}
           </Text>
 
           {product.description && (
-            <Text className="text-sm text-gray-600 mb-2" numberOfLines={2}>
+            <Text className="mb-2 text-sm text-gray-600" numberOfLines={2}>
               {product.description}
             </Text>
           )}
 
           {/* Ingrédients (optionnel) */}
           {product.ingredients && product.ingredients.length > 0 && (
-            <Text className="text-xs text-gray-500 mb-2" numberOfLines={1}>
+            <Text className="mb-2 text-xs text-gray-500" numberOfLines={1}>
               {product.ingredients.slice(0, 3).join(", ")}
               {product.ingredients.length > 3 && "..."}
             </Text>
@@ -58,11 +58,11 @@ export function ProductCard({ product, onPress }: ProductCardProps) {
 
           {/* Prix */}
           <View className="flex-row items-center justify-between">
-            <Text className="md:text-2xl text-xl font-bold text-primary-500">
+            <Text className="text-xl font-bold text-primary-500 md:text-2xl">
               {product.base_price.toFixed(2)} €
             </Text>
             {!product.is_available && (
-              <Text className="text-xs text-error-500 font-medium">
+              <Text className="text-xs font-medium text-error-500">
                 Indisponible
               </Text>
             )}

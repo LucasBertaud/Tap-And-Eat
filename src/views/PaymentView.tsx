@@ -11,11 +11,9 @@ export const PaymentView: React.FC = () => {
     cardInfo,
     totalAmount,
     isProcessing,
-    lastResult,
     validationErrors,
     updateCardInfo,
     handlePayment,
-    resetPayment,
   } = usePaymentViewModel();
 
   const onPaymentSubmit = async () => {
@@ -23,17 +21,19 @@ export const PaymentView: React.FC = () => {
 
     if (result.success) {
       router.push({
-        pathname: '/payment-success',
+        pathname: "/payment-success",
         params: {
           orderNumber: result.orderNumber,
           totalAmount: result.amount.toString(),
         },
       });
-    } else if (result.errorMessage === 'Veuillez corriger les erreurs du formulaire') {
+    } else if (
+      result.errorMessage === "Veuillez corriger les erreurs du formulaire"
+    ) {
       // Stay on payment page for form validation errors
     } else {
       router.push({
-        pathname: '/payment-error',
+        pathname: "/payment-error",
         params: {
           errorMessage: result.errorMessage,
           totalAmount: result.amount.toString(),
@@ -76,21 +76,21 @@ export const PaymentView: React.FC = () => {
         contentContainerClassName="items-center"
       >
         <View className="w-full max-w-3xl">
-          <View className="bg-primary-50 border border-primary-200 rounded-lg p-4 mb-6">
-            <View className="flex-row items-center mb-2">
+          <View className="mb-6 rounded-lg border border-primary-200 bg-primary-50 p-4">
+            <View className="mb-2 flex-row items-center">
               <Ionicons name="shield-checkmark" size={20} color="#059669" />
-              <Text className="text-primary-800 font-semibold ml-2">
+              <Text className="ml-2 font-semibold text-primary-800">
                 Paiement sécurisé
               </Text>
             </View>
-            <Text className="text-primary-700 text-sm">
+            <Text className="text-sm text-primary-700">
               Vos informations bancaires sont chiffrées et ne sont pas stockées.
               Cette démo simule un paiement réel avec 80% de succès.
             </Text>
           </View>
 
-          <View className="bg-white rounded-lg p-6 mb-6 shadow-sm">
-            <Text className="text-xl font-semibold text-secondary-900 mb-4">
+          <View className="mb-6 rounded-lg bg-white p-6 shadow-sm">
+            <Text className="mb-4 text-xl font-semibold text-secondary-900">
               Informations de paiement
             </Text>
 
@@ -100,34 +100,42 @@ export const PaymentView: React.FC = () => {
               expiryYear={cardInfo.expiryYear}
               cvv={cardInfo.cvv}
               holderName={cardInfo.holderName}
-              onCardNumberChange={(value) => updateCardInfo('number', value)}
-              onExpiryMonthChange={(value) => updateCardInfo('expiryMonth', value)}
-              onExpiryYearChange={(value) => updateCardInfo('expiryYear', value)}
-              onCvvChange={(value) => updateCardInfo('cvv', value)}
-              onHolderNameChange={(value) => updateCardInfo('holderName', value)}
+              onCardNumberChange={(value) => updateCardInfo("number", value)}
+              onExpiryMonthChange={(value) =>
+                updateCardInfo("expiryMonth", value)
+              }
+              onExpiryYearChange={(value) =>
+                updateCardInfo("expiryYear", value)
+              }
+              onCvvChange={(value) => updateCardInfo("cvv", value)}
+              onHolderNameChange={(value) =>
+                updateCardInfo("holderName", value)
+              }
               validationErrors={validationErrors}
             />
           </View>
 
-          <View className="bg-white rounded-lg p-6 mb-6 shadow-sm">
-            <Text className="text-xl font-semibold text-secondary-900 mb-4">
+          <View className="mb-6 rounded-lg bg-white p-6 shadow-sm">
+            <Text className="mb-4 text-xl font-semibold text-secondary-900">
               Récapitulatif
             </Text>
 
-            <View className="flex-row justify-between items-center py-2 border-b border-secondary-100">
+            <View className="flex-row items-center justify-between border-b border-secondary-100 py-2">
               <Text className="text-secondary-600">Sous-total</Text>
-              <Text className="text-secondary-900 font-medium">
+              <Text className="font-medium text-secondary-900">
                 {totalAmount.toFixed(2)} €
               </Text>
             </View>
 
-            <View className="flex-row justify-between items-center py-2 border-b border-secondary-100">
+            <View className="flex-row items-center justify-between border-b border-secondary-100 py-2">
               <Text className="text-secondary-600">Frais de livraison</Text>
-              <Text className="text-secondary-900 font-medium">0.00 €</Text>
+              <Text className="font-medium text-secondary-900">0.00 €</Text>
             </View>
 
-            <View className="flex-row justify-between items-center py-4">
-              <Text className="text-lg font-semibold text-secondary-900">Total</Text>
+            <View className="flex-row items-center justify-between py-4">
+              <Text className="text-lg font-semibold text-secondary-900">
+                Total
+              </Text>
               <Text className="text-2xl font-bold text-primary-600">
                 {totalAmount.toFixed(2)} €
               </Text>

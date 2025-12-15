@@ -1,14 +1,14 @@
-import { useAuth } from '@/src/hooks/use-auth-redux'
-import { SplashScreen } from 'expo-router'
+import { useAuth } from "@/src/hooks/use-auth-redux";
+import { SplashScreen } from "expo-router";
 
-SplashScreen.preventAutoHideAsync()
+SplashScreen.preventAutoHideAsync();
 
 export function SplashScreenController() {
-  const { isLoading } = useAuth()
+  const { isLoading } = useAuth();
 
   if (!isLoading) {
-    SplashScreen.hideAsync()
+    SplashScreen.hideAsync();
   }
 
-  return null
+  return null;
 }

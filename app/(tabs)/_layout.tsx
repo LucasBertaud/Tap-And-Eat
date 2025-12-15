@@ -1,5 +1,5 @@
-import { TabsLayoutView } from '@/src/views'
+import { TabsLayoutView } from "@/src/views";
 
 export default function TabLayout() {
-  return <TabsLayoutView />
+  return <TabsLayoutView />;
 }

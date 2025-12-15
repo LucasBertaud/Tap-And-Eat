@@ -41,28 +41,28 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <View
-      className={`${backgroundColor} border-b-2 border-primary-100 md:px-8 md:py-6 px-4 py-4 shadow-md`}
+      className={`${backgroundColor} border-b-2 border-primary-100 px-4 py-4 shadow-md md:px-8 md:py-6`}
     >
       {/* Conteneur centré avec max-width pour tablette */}
-      <View className="w-full max-w-7xl mx-auto">
+      <View className="mx-auto w-full max-w-7xl">
         <View className="flex-row items-center justify-between">
           {/* Partie gauche : Bouton retour + Titre */}
-          <View className="flex-row items-center flex-1">
+          <View className="flex-1 flex-row items-center">
             {showBackButton && (
               <TouchableOpacity
                 onPress={handleBackPress}
-                className="md:mr-6 mr-4 md:p-3 p-2 bg-primary-50 rounded-full"
+                className="mr-4 rounded-full bg-primary-50 p-2 md:mr-6 md:p-3"
                 activeOpacity={0.7}
               >
                 <Ionicons name="arrow-back" size={28} color="#F97316" />
               </TouchableOpacity>
             )}
             <View className="flex-1">
-              <Text className="md:text-4xl text-2xl font-bold text-secondary-900">
+              <Text className="text-2xl font-bold text-secondary-900 md:text-4xl">
                 {title}
               </Text>
               {subtitle && (
-                <Text className="md:text-lg text-sm text-secondary-600 md:mt-2 mt-1">
+                <Text className="mt-1 text-sm text-secondary-600 md:mt-2 md:text-lg">
                   {subtitle}
                 </Text>
               )}
@@ -71,12 +71,12 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Partie droite : Actions */}
           {actions.length > 0 && (
-            <View className="flex-row items-center md:gap-4 gap-2">
+            <View className="flex-row items-center gap-2 md:gap-4">
               {actions.map((action, index) => (
                 <TouchableOpacity
                   key={index}
                   onPress={action.onPress}
-                  className={`flex-row items-center md:px-6 md:py-4 px-3 py-2 rounded-2xl shadow-sm ${
+                  className={`flex-row items-center rounded-2xl px-3 py-2 shadow-sm md:px-6 md:py-4 ${
                     action.backgroundColor || "bg-secondary-100"
                   }`}
                   activeOpacity={0.7}
@@ -88,7 +88,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   />
                   {action.label && (
                     <Text
-                      className="md:ml-3 ml-1 md:text-lg font-semibold"
+                      className="ml-1 font-semibold md:ml-3 md:text-lg"
                       style={{ color: action.color || "#6B7280" }}
                     >
                       {action.label}

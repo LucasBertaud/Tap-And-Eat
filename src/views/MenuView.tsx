@@ -24,7 +24,6 @@ export default function MenuView() {
     error,
     filterByCategory,
     searchProducts,
-    resetFilters,
     reload,
   } = useMenuViewModel();
 
@@ -51,10 +50,6 @@ export default function MenuView() {
     searchProducts(text);
   };
 
-  const handleClearFilters = () => {
-    resetFilters();
-  };
-
   const handleProductPress = (productId: string) => {
     console.log("Navigating to product:", productId);
     router.push({
@@ -66,10 +61,7 @@ export default function MenuView() {
   if (isLoading && !refreshing) {
     return (
       <ScreenWrapper className="flex-1 bg-gray-50">
-        <LoadingSpinner
-          fullScreen
-          message="Chargement du menu..."
-        />
+        <LoadingSpinner fullScreen message="Chargement du menu..." />
       </ScreenWrapper>
     );
   }
@@ -77,10 +69,7 @@ export default function MenuView() {
   if (refreshing) {
     return (
       <ScreenWrapper className="flex-1 bg-gray-50">
-        <LoadingSpinner
-          fullScreen
-          message="Actualisation..."
-        />
+        <LoadingSpinner fullScreen message="Actualisation..." />
       </ScreenWrapper>
     );
   }
@@ -90,14 +79,14 @@ export default function MenuView() {
       <ScreenWrapper className="flex-1 bg-gray-50">
         <View className="flex-1 items-center justify-center px-6">
           <Ionicons name="alert-circle-outline" size={64} color="#EF4444" />
-          <Text className="text-red-600 text-lg font-semibold mt-4 text-center">
+          <Text className="mt-4 text-center text-lg font-semibold text-red-600">
             {error}
           </Text>
           <TouchableOpacity
             onPress={reload}
-            className="mt-6 bg-orange-500 px-6 py-3 rounded-lg"
+            className="mt-6 rounded-lg bg-orange-500 px-6 py-3"
           >
-            <Text className="text-white font-semibold">Réessayer</Text>
+            <Text className="font-semibold text-white">Réessayer</Text>
           </TouchableOpacity>
         </View>
       </ScreenWrapper>
@@ -123,14 +112,14 @@ export default function MenuView() {
         }
       />
 
-      <View className="bg-white px-4 pt-4 pb-2 border-b border-gray-200">
-        <View className="flex-row items-center bg-gray-100 rounded-lg px-4 py-3 mb-4 mx-auto w-full max-w-4xl">
+      <View className="border-b border-gray-200 bg-white px-4 pb-2 pt-4">
+        <View className="mx-auto mb-4 w-full max-w-4xl flex-row items-center rounded-lg bg-gray-100 px-4 py-3">
           <Ionicons name="search" size={20} color="#9CA3AF" />
           <TextInput
             placeholder="Rechercher un produit..."
             value={searchQuery}
             onChangeText={handleSearchChange}
-            className="flex-1 ml-2 text-base text-gray-900"
+            className="ml-2 flex-1 text-base text-gray-900"
             placeholderTextColor="#9CA3AF"
           />
           {searchQuery !== "" && (
@@ -152,7 +141,7 @@ export default function MenuView() {
               activeOpacity={0.7}
             >
               <View
-                className={`w-20 h-20 rounded-full items-center justify-center mb-2 border-2 ${
+                className={`mb-2 h-20 w-20 items-center justify-center rounded-full border-2 ${
                   !selectedCategoryId
                     ? "border-orange-500 bg-orange-50"
                     : "border-gray-200 bg-gray-100"
@@ -165,7 +154,7 @@ export default function MenuView() {
                 />
               </View>
               <Text
-                className={`text-sm text-center font-medium ${
+                className={`text-center text-sm font-medium ${
                   !selectedCategoryId ? "text-orange-500" : "text-gray-700"
                 }`}
               >
@@ -200,10 +189,10 @@ export default function MenuView() {
         {filteredCategories.length === 0 ? (
           <View className="items-center justify-center py-20">
             <Ionicons name="sad-outline" size={64} color="#9CA3AF" />
-            <Text className="text-gray-500 text-lg mt-4 text-center">
+            <Text className="mt-4 text-center text-lg text-gray-500">
               Aucun produit trouvé
             </Text>
-            <Text className="text-gray-400 text-sm mt-2 text-center">
+            <Text className="mt-2 text-center text-sm text-gray-400">
               Essayez de modifier vos filtres
             </Text>
           </View>
@@ -212,16 +201,16 @@ export default function MenuView() {
             {filteredCategories.map((category) => (
               <View key={category.id} className="mt-6">
                 {/* Titre de la catégorie */}
-                <View className="flex-row items-center mb-4">
-                  <View className="flex-1 h-px bg-gray-200" />
-                  <Text className="text-xl font-bold text-gray-900 mx-4">
+                <View className="mb-4 flex-row items-center">
+                  <View className="h-px flex-1 bg-gray-200" />
+                  <Text className="mx-4 text-xl font-bold text-gray-900">
                     {category.name}
                   </Text>
-                  <View className="flex-1 h-px bg-gray-200" />
+                  <View className="h-px flex-1 bg-gray-200" />
                 </View>
 
                 {category.description && (
-                  <Text className="text-sm text-gray-600 mb-4 text-center">
+                  <Text className="mb-4 text-center text-sm text-gray-600">
                     {category.description}
                   </Text>
                 )}

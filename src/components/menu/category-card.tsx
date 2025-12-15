@@ -23,24 +23,24 @@ export function CategoryCard({
       activeOpacity={0.7}
     >
       <View
-        className={`w-20 h-20 rounded-full overflow-hidden mb-2 border-2 ${
+        className={`mb-2 h-20 w-20 overflow-hidden rounded-full border-2 ${
           isSelected ? "border-primary-500" : "border-gray-200"
         }`}
       >
         {category.image_url ? (
           <Image
             source={{ uri: category.image_url }}
-            className="w-full h-full"
+            className="h-full w-full"
             resizeMode="cover"
           />
         ) : (
-          <View className="w-full h-full bg-gray-200 items-center justify-center">
+          <View className="h-full w-full items-center justify-center bg-gray-200">
             <Text className="text-2xl text-gray-400">🍔</Text>
           </View>
         )}
       </View>
       <Text
-        className={`text-sm text-center font-medium ${
+        className={`text-center text-sm font-medium ${
           isSelected ? "text-primary-500" : "text-gray-700"
         }`}
         numberOfLines={2}

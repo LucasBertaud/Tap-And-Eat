@@ -19,22 +19,22 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
   const itemTotal = calculateItemTotal(item);
 
   return (
-    <View className="bg-white rounded-xl p-4 md:p-6 mb-3 shadow-sm border border-secondary-100">
+    <View className="mb-3 rounded-xl border border-secondary-100 bg-white p-4 shadow-sm md:p-6">
       {/* En-tête avec image et infos */}
-      <View className="flex-row mb-3">
+      <View className="mb-3 flex-row">
         {/* Image du produit */}
         <Image
           source={{ uri: item.product.image_url || undefined }}
-          className="md:w-28 md:h-28 w-20 h-20 rounded-lg bg-secondary-100"
+          className="h-20 w-20 rounded-lg bg-secondary-100 md:h-28 md:w-28"
           resizeMode="cover"
         />
 
         {/* Infos produit */}
-        <View className="flex-1 ml-3 md:ml-4">
-          <Text className="md:text-xl text-base font-semibold text-secondary-900 mb-1">
+        <View className="ml-3 flex-1 md:ml-4">
+          <Text className="mb-1 text-base font-semibold text-secondary-900 md:text-xl">
             {item.product.name}
           </Text>
-          <Text className="md:text-base text-sm text-secondary-600">
+          <Text className="text-sm text-secondary-600 md:text-base">
             {item.product.base_price.toFixed(2)} €
           </Text>
         </View>
@@ -51,11 +51,11 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
 
       {/* Options sélectionnées */}
       {item.selectedOptions && item.selectedOptions.length > 0 && (
-        <View className="mb-3 px-2 py-2 bg-secondary-50 rounded-lg">
+        <View className="mb-3 rounded-lg bg-secondary-50 px-2 py-2">
           {item.selectedOptions.map((option) => (
             <View
               key={option.optionId}
-              className="flex-row justify-between mb-1"
+              className="mb-1 flex-row justify-between"
             >
               <Text className="text-sm text-secondary-700">{option.name}</Text>
               {option.priceModifier > 0 && (
@@ -71,7 +71,7 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
       {/* Contrôles quantité et prix total */}
       <View className="flex-row items-center justify-between">
         {/* Sélecteur de quantité */}
-        <View className="flex-row items-center bg-secondary-50 rounded-full px-2 py-1">
+        <View className="flex-row items-center rounded-full bg-secondary-50 px-2 py-1">
           <TouchableOpacity
             onPress={() => onDecrease(item.id)}
             className="p-2"
@@ -84,7 +84,7 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
             />
           </TouchableOpacity>
 
-          <Text className="md:text-xl text-base font-semibold text-secondary-900 mx-3 md:mx-4 min-w-[24px] text-center">
+          <Text className="mx-3 min-w-[24px] text-center text-base font-semibold text-secondary-900 md:mx-4 md:text-xl">
             {item.quantity}
           </Text>
 
@@ -98,8 +98,8 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
         </View>
 
         {/* Prix total de l'item */}
-        <View className="bg-primary-50 px-4 md:px-6 py-2 rounded-full">
-          <Text className="md:text-xl text-lg font-bold text-primary-600">
+        <View className="rounded-full bg-primary-50 px-4 py-2 md:px-6">
+          <Text className="text-lg font-bold text-primary-600 md:text-xl">
             {itemTotal.toFixed(2)} €
           </Text>
         </View>

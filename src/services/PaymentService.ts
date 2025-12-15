@@ -1,9 +1,15 @@
 import type { CreditCardInfo, PaymentResult } from "@/src/models/Payment";
-import { validateCreditCardInfo, ValidationResult } from '@/src/utils/payment/validation';
+import {
+  validateCreditCardInfo,
+  ValidationResult,
+} from "@/src/utils/payment/validation";
 
 class PaymentService {
-  async processPayment(cardInfo: CreditCardInfo, amount: number): Promise<PaymentResult> {
-    await new Promise(resolve => setTimeout(resolve, 2000));
+  async processPayment(
+    cardInfo: CreditCardInfo,
+    amount: number
+  ): Promise<PaymentResult> {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     const isSuccess = Math.random() < 0.8;
 
@@ -22,7 +28,7 @@ class PaymentService {
         "Fonds insuffisants",
         "Carte bloquée",
         "Erreur de communication avec la banque",
-        "CVV incorrect"
+        "CVV incorrect",
       ];
       const randomError = errors[Math.floor(Math.random() * errors.length)];
 

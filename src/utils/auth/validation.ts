@@ -1,4 +1,4 @@
-import { ValidationResult } from '../validation';
+import { ValidationResult } from "../validation";
 
 export { ValidationResult };
 

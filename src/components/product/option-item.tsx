@@ -23,20 +23,20 @@ export function OptionItem({
   return (
     <TouchableOpacity
       onPress={onPress}
-      className={`flex-row items-center justify-between p-4 mb-3 rounded-xl border-2 ${
+      className={`mb-3 flex-row items-center justify-between rounded-xl border-2 p-4 ${
         isSelected
           ? "border-primary-500 bg-primary-50"
           : "border-secondary-200 bg-white"
       }`}
       activeOpacity={0.7}
     >
-      <View className="flex-row items-center flex-1">
+      <View className="flex-1 flex-row items-center">
         {/* Indicateur de sélection (checkbox/radio) */}
         <View
-          className={`w-5 h-5 rounded-full items-center justify-center mr-2 ${
+          className={`mr-2 h-5 w-5 items-center justify-center rounded-full ${
             isSelected
               ? "bg-primary-500"
-              : "bg-secondary-100 border-2 border-secondary-300"
+              : "border-2 border-secondary-300 bg-secondary-100"
           }`}
         >
           {isSelected && (
@@ -50,7 +50,7 @@ export function OptionItem({
 
         {/* Nom de l'option */}
         <Text
-          className={`text-base font-medium flex-1 ${
+          className={`flex-1 text-base font-medium ${
             isSelected ? "text-secondary-900" : "text-secondary-700"
           }`}
         >
@@ -61,7 +61,7 @@ export function OptionItem({
       {/* Prix modificateur */}
       {option.price_modifier !== 0 && (
         <Text
-          className={`text-base font-bold ml-2 ${
+          className={`ml-2 text-base font-bold ${
             isSelected ? "text-primary-500" : "text-secondary-600"
           }`}
         >
