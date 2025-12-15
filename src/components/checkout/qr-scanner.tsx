@@ -1,8 +1,8 @@
+import { useAlert } from "@/src/hooks/use-alert";
 import { Ionicons } from "@expo/vector-icons";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { useState } from "react";
 import {
-  Alert,
   Modal,
   StyleSheet,
   Text,
@@ -23,6 +23,7 @@ export const QRScanner: React.FC<QRScannerProps> = ({
 }) => {
   const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
+  const { showAlert, AlertComponent } = useAlert();
 
   const handleBarCodeScanned = ({ data }: { data: string }) => {
     if (scanned) return;
@@ -36,10 +37,12 @@ export const QRScanner: React.FC<QRScannerProps> = ({
   const handleRequestPermission = async () => {
     const result = await requestPermission();
     if (!result.granted) {
-      Alert.alert(
-        "Permission refusée",
-        "L'accès à la caméra est nécessaire pour scanner les QR codes"
-      );
+      showAlert({
+        title: "Permission refusée",
+        message: "L'accès à la caméra est nécessaire pour scanner les QR codes",
+        type: "error",
+        buttons: [{ text: "OK", style: "default" }],
+      });
       onClose();
     }
   };
@@ -118,6 +121,7 @@ export const QRScanner: React.FC<QRScannerProps> = ({
           </View>
         </CameraView>
       </View>
+      <AlertComponent />
     </Modal>
   );
 };

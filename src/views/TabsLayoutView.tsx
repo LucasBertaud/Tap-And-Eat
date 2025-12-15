@@ -68,6 +68,12 @@ export function TabsLayoutView() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="payment"
+        options={{
+          href: null,
+        }}
+      />
     </Tabs>
   );
 }

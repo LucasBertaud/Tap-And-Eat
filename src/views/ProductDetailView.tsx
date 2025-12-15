@@ -1,18 +1,17 @@
 import { OptionGroupSelector } from "@/src/components/product";
-import { Navbar, ScreenWrapper } from "@/src/components/ui";
+import { LoadingSpinner, Navbar, ScreenWrapper } from "@/src/components/ui";
+import { useAlert } from "@/src/hooks/use-alert";
 import { addToCart } from "@/src/store/slices/cartSlice";
 import { useProductDetailViewModel } from "@/src/viewmodels/ProductDetailViewModel";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React from "react";
 import {
-  ActivityIndicator,
-  Alert,
   Image,
   ScrollView,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import { useDispatch } from "react-redux";
 
@@ -22,6 +21,7 @@ interface ProductDetailViewProps {
 
 export function ProductDetailView({ productId }: ProductDetailViewProps) {
   const dispatch = useDispatch();
+  const { showAlert, AlertComponent } = useAlert();
   const {
     product,
     loading,
@@ -39,16 +39,23 @@ export function ProductDetailView({ productId }: ProductDetailViewProps) {
   const onOptionToggle = (groupId: string, optionId: string) => {
     const errorMessage = handleOptionToggle(groupId, optionId);
     if (errorMessage) {
-      Alert.alert("Limite atteinte", errorMessage);
+      showAlert({
+        title: "Limite atteinte",
+        message: errorMessage,
+        type: "warning",
+        buttons: [{ text: "OK", style: "default" }],
+      });
     }
   };
 
   const handleAddToCart = () => {
     if (!canAddToCart || !product) {
-      Alert.alert(
-        "Options manquantes",
-        "Veuillez sélectionner toutes les options requises"
-      );
+      showAlert({
+        title: "Options manquantes",
+        message: "Veuillez sélectionner toutes les options requises",
+        type: "warning",
+        buttons: [{ text: "OK", style: "default" }],
+      });
       return;
     }
 
@@ -62,20 +69,21 @@ export function ProductDetailView({ productId }: ProductDetailViewProps) {
       })
     );
 
-    Alert.alert(
-      "✅ Ajouté au panier",
-      `${quantity}x ${product.name} ajouté au panier`,
-      [{ text: "OK", onPress: () => router.back() }]
-    );
+    showAlert({
+      title: "Ajouté au panier",
+      message: `${quantity}x ${product.name} ajouté au panier`,
+      type: "success",
+      buttons: [{ text: "OK", onPress: () => router.back(), style: "default" }],
+    });
   };
 
   if (loading) {
     return (
       <ScreenWrapper className="flex-1 bg-gray-50">
-        <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#FF6B35" />
-          <Text className="text-gray-600 mt-4">Chargement...</Text>
-        </View>
+        <LoadingSpinner
+          fullScreen
+          message="Chargement du produit..."
+        />
       </ScreenWrapper>
     );
   }
@@ -237,6 +245,7 @@ export function ProductDetailView({ productId }: ProductDetailViewProps) {
           </View>
         </View>
       )}
+      <AlertComponent />
     </ScreenWrapper>
   );
 }

@@ -1,17 +1,15 @@
 import { QRScanner } from "@/src/components/checkout";
 import { Navbar, ScreenWrapper } from "@/src/components/ui";
+import { useAlert } from "@/src/hooks/use-alert";
 import { calculateItemTotal } from "@/src/models";
 import { useCheckoutViewModel } from "@/src/viewmodels";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { Alert, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 
-/**
- * CheckoutView - US5 : Validation de commande
- * Récapitulatif + scan QR pour numéro de table
- */
 export const CheckoutView: React.FC = () => {
   const router = useRouter();
+  const { showAlert, AlertComponent } = useAlert();
   const {
     cartItems,
     totalPrice,
@@ -27,11 +25,15 @@ export const CheckoutView: React.FC = () => {
 
   const handleProceedToPayment = () => {
     if (!canProceedToPayment) {
-      Alert.alert("Erreur", "Veuillez scanner le QR code de votre table");
+      showAlert({
+        title: "Erreur",
+        message: "Veuillez scanner le QR code de votre table",
+        type: "error",
+        buttons: [{ text: "OK", style: "default" }],
+      });
       return;
     }
-    // TODO: Naviguer vers US6 - Paiement
-    Alert.alert("À venir", "Le paiement sera bientôt disponible");
+    router.push("/payment");
   };
 
   if (cartItems.length === 0) {
@@ -70,7 +72,6 @@ export const CheckoutView: React.FC = () => {
         className="flex-1 px-4 py-4"
         showsVerticalScrollIndicator={false}
       >
-        {/* Informations commande */}
         <View className="bg-white rounded-xl p-4 mb-4 shadow-sm">
           <Text className="text-lg font-bold text-secondary-900 mb-2">
             Votre commande
@@ -80,7 +81,6 @@ export const CheckoutView: React.FC = () => {
           </Text>
         </View>
 
-        {/* Liste des articles */}
         <View className="bg-white rounded-xl p-4 mb-4 shadow-sm">
           <Text className="text-base font-bold text-secondary-900 mb-3">
             Détails
@@ -213,6 +213,7 @@ export const CheckoutView: React.FC = () => {
         onClose={handleCloseScanner}
         onScanned={handleQRScanned}
       />
+      <AlertComponent />
     </ScreenWrapper>
   );
 };

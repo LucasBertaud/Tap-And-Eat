@@ -1,16 +1,16 @@
 import { AuthFooter, AuthHeader, AuthToggle } from "@/src/components/auth";
 import { Button, ErrorMessage, InputForm } from "@/src/components/forms";
 import { ScreenWrapper } from "@/src/components/ui";
+import { useAlert } from "@/src/hooks/use-alert";
 import {
   validateEmail,
   validateFullName,
   validatePassword,
   validatePhone,
-} from "@/src/utils";
+} from "@/src/utils/auth";
 import { useAuthViewModel } from "@/src/viewmodels";
 import { useState } from "react";
 import {
-  Alert,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -18,6 +18,7 @@ import {
 } from "react-native";
 
 const AuthView = () => {
+  const { showAlert, AlertComponent } = useAlert();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
@@ -87,17 +88,29 @@ const AuthView = () => {
         },
       });
       if (!result.success && result.error) {
-        Alert.alert("Erreur d'inscription", result.error.message);
+        showAlert({
+          title: "Erreur d'inscription",
+          message: result.error.message,
+          type: "error",
+          buttons: [{ text: "OK", style: "default" }],
+        });
       } else if (result.success && result.requiresEmailConfirmation) {
-        Alert.alert(
-          "Vérifiez votre email",
-          "Un email de confirmation a été envoyé à votre adresse !"
-        );
+        showAlert({
+          title: "Vérifiez votre email",
+          message: "Un email de confirmation a été envoyé à votre adresse !",
+          type: "success",
+          buttons: [{ text: "OK", style: "default" }],
+        });
       }
     } else {
       const result = await viewModel.handleSignIn({ email, password });
       if (!result.success && result.error) {
-        Alert.alert("Erreur de connexion", result.error.message);
+        showAlert({
+          title: "Erreur de connexion",
+          message: result.error.message,
+          type: "error",
+          buttons: [{ text: "OK", style: "default" }],
+        });
       }
     }
   };
@@ -219,6 +232,7 @@ const AuthView = () => {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
+      <AlertComponent />
     </ScreenWrapper>
   );
 };

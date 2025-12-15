@@ -1,12 +1,11 @@
 import { CategoryCard, ProductCard } from "@/src/components/menu";
-import { Navbar, ScreenWrapper } from "@/src/components/ui";
+import { LoadingSpinner, Navbar, ScreenWrapper } from "@/src/components/ui";
 import { useAppSelector } from "@/src/store/hooks";
 import { useAuthViewModel, useMenuViewModel } from "@/src/viewmodels";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import {
-  ActivityIndicator,
   RefreshControl,
   ScrollView,
   Text,
@@ -67,10 +66,21 @@ export default function MenuView() {
   if (isLoading && !refreshing) {
     return (
       <ScreenWrapper className="flex-1 bg-gray-50">
-        <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#F97316" />
-          <Text className="text-gray-600 mt-4">Chargement du menu...</Text>
-        </View>
+        <LoadingSpinner
+          fullScreen
+          message="Chargement du menu..."
+        />
+      </ScreenWrapper>
+    );
+  }
+
+  if (refreshing) {
+    return (
+      <ScreenWrapper className="flex-1 bg-gray-50">
+        <LoadingSpinner
+          fullScreen
+          message="Actualisation..."
+        />
       </ScreenWrapper>
     );
   }
@@ -180,7 +190,7 @@ export default function MenuView() {
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl
-            refreshing={refreshing}
+            refreshing={false}
             onRefresh={onRefresh}
             tintColor="#F97316"
             colors={["#F97316"]}

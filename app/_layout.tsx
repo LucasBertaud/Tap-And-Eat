@@ -23,6 +23,8 @@ function RootNavigator() {
     const inAuthGroup = segments[0] === "(tabs)";
     const inProductDetail = segments[0] === "product";
     const inCheckout = segments[0] === "checkout";
+    const inPaymentSuccess = segments[0] === "payment-success";
+    const inPaymentError = segments[0] === "payment-error";
 
     if (!isLoggedIn && inAuthGroup) {
       router.replace("/login");
@@ -31,6 +33,8 @@ function RootNavigator() {
       !inAuthGroup &&
       !inProductDetail &&
       !inCheckout &&
+      !inPaymentSuccess &&
+      !inPaymentError &&
       segments[0] !== undefined
     ) {
       router.replace("/(tabs)");
@@ -43,6 +47,8 @@ function RootNavigator() {
       <Stack.Screen name="login" options={{ headerShown: false }} />
       <Stack.Screen name="product/[id]" options={{ headerShown: false }} />
       <Stack.Screen name="checkout" options={{ headerShown: false }} />
+      <Stack.Screen name="payment-success" options={{ headerShown: false }} />
+      <Stack.Screen name="payment-error" options={{ headerShown: false }} />
       <Stack.Screen name="+not-found" />
     </Stack>
   );

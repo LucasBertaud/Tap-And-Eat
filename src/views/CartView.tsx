@@ -1,12 +1,14 @@
 import { CartItemCard } from "@/src/components/cart";
 import { Navbar, ScreenWrapper } from "@/src/components/ui";
+import { useAlert } from "@/src/hooks/use-alert";
 import { useCartViewModel } from "@/src/viewmodels";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { Alert, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 export const CartView: React.FC = () => {
   const router = useRouter();
+  const { showAlert, AlertComponent } = useAlert();
   const {
     cartItems,
     itemCount,
@@ -19,18 +21,19 @@ export const CartView: React.FC = () => {
   } = useCartViewModel();
 
   const confirmClearCart = () => {
-    Alert.alert(
-      "Vider le panier",
-      "Êtes-vous sûr de vouloir supprimer tous les articles ?",
-      [
+    showAlert({
+      title: "Vider le panier",
+      message: "Êtes-vous sûr de vouloir supprimer tous les articles ?",
+      type: "warning",
+      buttons: [
         { text: "Annuler", style: "cancel" },
         {
           text: "Vider",
           style: "destructive",
           onPress: handleClearCart,
         },
-      ]
-    );
+      ],
+    });
   };
 
   const handleCheckout = () => {
@@ -125,6 +128,7 @@ export const CartView: React.FC = () => {
           </View>
         </>
       )}
+      <AlertComponent />
     </ScreenWrapper>
   );
 };
