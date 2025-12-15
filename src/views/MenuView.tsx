@@ -15,11 +15,6 @@ import {
   View,
 } from "react-native";
 
-/**
- * MenuView - Vue principale pour parcourir le menu
- * US1 - Parcourir le menu
- * Architecture: MVVM (ViewModel + Redux)
- */
 export default function MenuView() {
   const {
     categories,
@@ -42,13 +37,11 @@ export default function MenuView() {
   const onRefresh = () => {
     setRefreshing(true);
     reload();
-    // Redux gère l'async, on attend juste un peu pour l'UI
     setTimeout(() => setRefreshing(false), 1000);
   };
 
   const handleCategoryPress = (categoryId: string) => {
     if (selectedCategoryId === categoryId) {
-      // Si on clique sur la catégorie déjà sélectionnée, on désélectionne
       filterByCategory(null);
     } else {
       filterByCategory(categoryId);
@@ -103,7 +96,6 @@ export default function MenuView() {
 
   return (
     <ScreenWrapper className="flex-1 bg-gray-50">
-      {/* En-tête */}
       <Navbar
         title="Notre Menu"
         actions={
@@ -121,9 +113,7 @@ export default function MenuView() {
         }
       />
 
-      {/* Barre de recherche */}
       <View className="bg-white px-4 pt-4 pb-2 border-b border-gray-200">
-        {/* Barre de recherche avec max-width pour tablette */}
         <View className="flex-row items-center bg-gray-100 rounded-lg px-4 py-3 mb-4 mx-auto w-full max-w-4xl">
           <Ionicons name="search" size={20} color="#9CA3AF" />
           <TextInput
@@ -140,53 +130,51 @@ export default function MenuView() {
           )}
         </View>
 
-        {/* Liste des catégories (horizontale) */}
         <View className="mx-auto w-full max-w-4xl">
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
             className="mb-2"
           >
-          <TouchableOpacity
-            onPress={() => filterByCategory(null)}
-            className={`mr-4 items-center ${!selectedCategoryId ? "opacity-100" : "opacity-70"}`}
-            activeOpacity={0.7}
-          >
-            <View
-              className={`w-20 h-20 rounded-full items-center justify-center mb-2 border-2 ${
-                !selectedCategoryId
-                  ? "border-orange-500 bg-orange-50"
-                  : "border-gray-200 bg-gray-100"
-              }`}
+            <TouchableOpacity
+              onPress={() => filterByCategory(null)}
+              className={`mr-4 items-center ${!selectedCategoryId ? "opacity-100" : "opacity-70"}`}
+              activeOpacity={0.7}
             >
-              <Ionicons
-                name="grid"
-                size={32}
-                color={!selectedCategoryId ? "#F97316" : "#9CA3AF"}
-              />
-            </View>
-            <Text
-              className={`text-sm text-center font-medium ${
-                !selectedCategoryId ? "text-orange-500" : "text-gray-700"
-              }`}
-            >
-              Tout
-            </Text>
-          </TouchableOpacity>
+              <View
+                className={`w-20 h-20 rounded-full items-center justify-center mb-2 border-2 ${
+                  !selectedCategoryId
+                    ? "border-orange-500 bg-orange-50"
+                    : "border-gray-200 bg-gray-100"
+                }`}
+              >
+                <Ionicons
+                  name="grid"
+                  size={32}
+                  color={!selectedCategoryId ? "#F97316" : "#9CA3AF"}
+                />
+              </View>
+              <Text
+                className={`text-sm text-center font-medium ${
+                  !selectedCategoryId ? "text-orange-500" : "text-gray-700"
+                }`}
+              >
+                Tout
+              </Text>
+            </TouchableOpacity>
 
-          {categories.map((category) => (
-            <CategoryCard
-              key={category.id}
-              category={category}
-              isSelected={selectedCategoryId === category.id}
-              onPress={() => handleCategoryPress(category.id)}
-            />
-          ))}
+            {categories.map((category) => (
+              <CategoryCard
+                key={category.id}
+                category={category}
+                isSelected={selectedCategoryId === category.id}
+                onPress={() => handleCategoryPress(category.id)}
+              />
+            ))}
           </ScrollView>
         </View>
       </View>
 
-      {/* Liste des produits */}
       <ScrollView
         className="flex-1 px-4"
         showsVerticalScrollIndicator={false}
@@ -213,35 +201,33 @@ export default function MenuView() {
           <View className="mx-auto w-full max-w-4xl">
             {filteredCategories.map((category) => (
               <View key={category.id} className="mt-6">
-              {/* Titre de la catégorie */}
-              <View className="flex-row items-center mb-4">
-                <View className="flex-1 h-px bg-gray-200" />
-                <Text className="text-xl font-bold text-gray-900 mx-4">
-                  {category.name}
-                </Text>
-                <View className="flex-1 h-px bg-gray-200" />
+                {/* Titre de la catégorie */}
+                <View className="flex-row items-center mb-4">
+                  <View className="flex-1 h-px bg-gray-200" />
+                  <Text className="text-xl font-bold text-gray-900 mx-4">
+                    {category.name}
+                  </Text>
+                  <View className="flex-1 h-px bg-gray-200" />
+                </View>
+
+                {category.description && (
+                  <Text className="text-sm text-gray-600 mb-4 text-center">
+                    {category.description}
+                  </Text>
+                )}
+
+                {category.products.map((product) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    onPress={() => handleProductPress(product.id)}
+                  />
+                ))}
               </View>
-
-              {category.description && (
-                <Text className="text-sm text-gray-600 mb-4 text-center">
-                  {category.description}
-                </Text>
-              )}
-
-              {/* Liste des produits de la catégorie */}
-              {category.products.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  onPress={() => handleProductPress(product.id)}
-                />
-              ))}
-            </View>
             ))}
           </View>
         )}
 
-        {/* Espace en bas pour le scroll */}
         <View className="h-6" />
       </ScrollView>
     </ScreenWrapper>

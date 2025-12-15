@@ -77,7 +77,6 @@ const authSlice = createSlice({
     setSession: (state, action: PayloadAction<Session | null>) => {
       state.session = action.payload;
       state.isLoggedIn = action.payload !== null;
-      // Réinitialiser le profil si déconnexion
       if (action.payload === null) {
         state.profile = null;
       }

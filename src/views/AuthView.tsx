@@ -17,10 +17,6 @@ import {
   View,
 } from "react-native";
 
-/**
- * AuthView
- * Vue pour l'authentification
- */
 const AuthView = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,7 +33,6 @@ const AuthView = () => {
   const validateForm = (): boolean => {
     let isValid = true;
 
-    // Validation email
     const emailValidation = validateEmail(email);
     if (!emailValidation.isValid) {
       setEmailError(emailValidation.error || "");
@@ -46,7 +41,6 @@ const AuthView = () => {
       setEmailError("");
     }
 
-    // Validation mot de passe
     const passwordValidation = validatePassword(password);
     if (!passwordValidation.isValid) {
       setPasswordError(passwordValidation.error || "");
@@ -55,7 +49,6 @@ const AuthView = () => {
       setPasswordError("");
     }
 
-    // Validation champs supplémentaires pour l'inscription
     if (viewModel.isSignUpMode) {
       const fullNameValidation = validateFullName(fullName);
       if (!fullNameValidation.isValid) {
@@ -133,105 +126,94 @@ const AuthView = () => {
           keyboardShouldPersistTaps="handled"
         >
           <View className="flex-1 px-12 py-20 justify-center items-center">
-            {/* Conteneur centré avec largeur max pour tablette */}
             <View className="w-full max-w-2xl">
-              {/* Header */}
               <AuthHeader isSignUpMode={viewModel.isSignUpMode} />
 
-              {/* Formulaire */}
               <View className="w-full">
-              {/* Champ Nom complet (uniquement inscription) */}
-              {viewModel.isSignUpMode && (
+                {viewModel.isSignUpMode && (
+                  <InputForm
+                    label="Nom complet"
+                    required
+                    placeholder="Jean Dupont"
+                    value={fullName}
+                    onChangeText={(text) => {
+                      setFullName(text);
+                      if (fullNameError) setFullNameError("");
+                    }}
+                    error={fullNameError}
+                    editable={!viewModel.isLoading}
+                    autoCapitalize="words"
+                    autoComplete="name"
+                  />
+                )}
+
                 <InputForm
-                  label="Nom complet"
+                  label="Email"
                   required
-                  placeholder="Jean Dupont"
-                  value={fullName}
+                  placeholder="exemple@email.com"
+                  value={email}
                   onChangeText={(text) => {
-                    setFullName(text);
-                    if (fullNameError) setFullNameError("");
+                    setEmail(text);
+                    if (emailError) setEmailError("");
                   }}
-                  error={fullNameError}
+                  error={emailError}
                   editable={!viewModel.isLoading}
-                  autoCapitalize="words"
-                  autoComplete="name"
+                  autoCapitalize="none"
+                  keyboardType="email-address"
+                  autoComplete="email"
                 />
-              )}
 
-              {/* Champ Email */}
-              <InputForm
-                label="Email"
-                required
-                placeholder="exemple@email.com"
-                value={email}
-                onChangeText={(text) => {
-                  setEmail(text);
-                  if (emailError) setEmailError("");
-                }}
-                error={emailError}
-                editable={!viewModel.isLoading}
-                autoCapitalize="none"
-                keyboardType="email-address"
-                autoComplete="email"
-              />
+                {viewModel.isSignUpMode && (
+                  <InputForm
+                    label="Téléphone"
+                    required
+                    placeholder="06 12 34 56 78"
+                    value={phone}
+                    onChangeText={(text) => {
+                      setPhone(text);
+                      if (phoneError) setPhoneError("");
+                    }}
+                    error={phoneError}
+                    editable={!viewModel.isLoading}
+                    keyboardType="phone-pad"
+                    autoComplete="tel"
+                  />
+                )}
 
-              {/* Champ Téléphone (uniquement inscription) */}
-              {viewModel.isSignUpMode && (
                 <InputForm
-                  label="Téléphone"
+                  label="Mot de passe"
                   required
-                  placeholder="06 12 34 56 78"
-                  value={phone}
+                  placeholder="••••••••"
+                  value={password}
                   onChangeText={(text) => {
-                    setPhone(text);
-                    if (phoneError) setPhoneError("");
+                    setPassword(text);
+                    if (passwordError) setPasswordError("");
                   }}
-                  error={phoneError}
+                  error={passwordError}
                   editable={!viewModel.isLoading}
-                  keyboardType="phone-pad"
-                  autoComplete="tel"
+                  isPassword
+                  autoCapitalize="none"
+                  autoComplete="password"
                 />
-              )}
 
-              {/* Champ Mot de passe */}
-              <InputForm
-                label="Mot de passe"
-                required
-                placeholder="••••••••"
-                value={password}
-                onChangeText={(text) => {
-                  setPassword(text);
-                  if (passwordError) setPasswordError("");
-                }}
-                error={passwordError}
-                editable={!viewModel.isLoading}
-                isPassword
-                autoCapitalize="none"
-                autoComplete="password"
-              />
+                <ErrorMessage message={viewModel.error?.message} />
 
-              {/* Message d'erreur global */}
-              <ErrorMessage message={viewModel.error?.message} />
+                <Button
+                  title={
+                    viewModel.isSignUpMode ? "Créer mon compte" : "Se connecter"
+                  }
+                  onPress={handleSubmit}
+                  loading={viewModel.isLoading}
+                  disabled={viewModel.isLoading}
+                />
 
-              {/* Bouton principal */}
-              <Button
-                title={
-                  viewModel.isSignUpMode ? "Créer mon compte" : "Se connecter"
-                }
-                onPress={handleSubmit}
-                loading={viewModel.isLoading}
-                disabled={viewModel.isLoading}
-              />
+                <AuthToggle
+                  isSignUpMode={viewModel.isSignUpMode}
+                  onToggle={handleToggleMode}
+                  disabled={viewModel.isLoading}
+                />
+              </View>
 
-              {/* Bouton de changement de mode */}
-              <AuthToggle
-                isSignUpMode={viewModel.isSignUpMode}
-                onToggle={handleToggleMode}
-                disabled={viewModel.isLoading}
-              />
-            </View>
-
-              {/* Footer */}
               <AuthFooter />
             </View>
           </View>

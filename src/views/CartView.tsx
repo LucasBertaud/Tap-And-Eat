@@ -5,11 +5,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { Alert, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
-/**
- * CartView - US4 : Gestion du panier
- * Affiche les articles du panier avec possibilité de modifier quantités et supprimer
- * Architecture MVVM : toute la logique est dans CartViewModel
- */
 export const CartView: React.FC = () => {
   const router = useRouter();
   const {
@@ -23,9 +18,6 @@ export const CartView: React.FC = () => {
     handleClearCart,
   } = useCartViewModel();
 
-  /**
-   * Confirmer avant de vider le panier
-   */
   const confirmClearCart = () => {
     Alert.alert(
       "Vider le panier",
@@ -41,17 +33,12 @@ export const CartView: React.FC = () => {
     );
   };
 
-  /**
-   * Naviguer vers la validation de commande
-   */
   const handleCheckout = () => {
-    // US5 - à implémenter
-    Alert.alert("À venir", "La validation de commande sera bientôt disponible");
+    router.push("/checkout");
   };
 
   return (
     <ScreenWrapper className="flex-1 bg-secondary-50">
-      {/* En-tête */}
       <Navbar
         title="Mon Panier"
         subtitle={`${itemCount} ${itemCount > 1 ? "articles" : "article"}`}
@@ -70,9 +57,7 @@ export const CartView: React.FC = () => {
         }
       />
 
-      {/* Contenu */}
       {isEmpty ? (
-        // Panier vide
         <View className="flex-1 items-center justify-center px-6">
           <View className="bg-secondary-100 rounded-full p-8 mb-4">
             <Ionicons name="cart-outline" size={64} color="#9CA3AF" />
@@ -94,7 +79,6 @@ export const CartView: React.FC = () => {
           </TouchableOpacity>
         </View>
       ) : (
-        // Liste des articles
         <>
           <ScrollView
             className="flex-1 px-4 py-4"
@@ -102,45 +86,41 @@ export const CartView: React.FC = () => {
             contentContainerClassName="items-center"
           >
             <View className="w-full">
-            {cartItems.map((item) => (
-              <CartItemCard
-                key={item.id}
-                item={item}
-                onIncrease={handleIncreaseQuantity}
-                onDecrease={handleDecreaseQuantity}
-                onRemove={handleRemoveItem}
-              />
-            ))}
+              {cartItems.map((item) => (
+                <CartItemCard
+                  key={item.id}
+                  item={item}
+                  onIncrease={handleIncreaseQuantity}
+                  onDecrease={handleDecreaseQuantity}
+                  onRemove={handleRemoveItem}
+                />
+              ))}
 
-              {/* Espacement en bas pour le bouton fixe */}
               <View className="h-24" />
             </View>
           </ScrollView>
 
-          {/* Barre de validation en bas (fixe) */}
           <View className="bg-white border-t border-secondary-200 px-4 pt-4 pb-8">
             <View className="w-full max-w-3xl mx-auto">
-            {/* Récapitulatif */}
-            <View className="flex-row justify-between items-center mb-4">
-              <Text className="text-base text-secondary-600">Total</Text>
-              <Text className="text-2xl font-bold text-secondary-900">
-                {totalPrice.toFixed(2)} €
-              </Text>
-            </View>
-
-            {/* Bouton Commander */}
-            <TouchableOpacity
-              onPress={handleCheckout}
-              className="bg-primary-500 rounded-full py-4 items-center"
-              activeOpacity={0.8}
-            >
-              <View className="flex-row items-center">
-                <Text className="text-white text-lg font-bold mr-2">
-                  Commander
+              <View className="flex-row justify-between items-center mb-4">
+                <Text className="text-base text-secondary-600">Total</Text>
+                <Text className="text-2xl font-bold text-secondary-900">
+                  {totalPrice.toFixed(2)} €
                 </Text>
-                <Ionicons name="arrow-forward" size={20} color="white" />
               </View>
-            </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={handleCheckout}
+                className="bg-primary-500 rounded-full py-4 items-center"
+                activeOpacity={0.8}
+              >
+                <View className="flex-row items-center">
+                  <Text className="text-white text-lg font-bold mr-2">
+                    Commander
+                  </Text>
+                  <Ionicons name="arrow-forward" size={20} color="white" />
+                </View>
+              </TouchableOpacity>
             </View>
           </View>
         </>
