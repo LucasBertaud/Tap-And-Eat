@@ -9,9 +9,9 @@ export function NotFoundView() {
   return (
     <ScreenWrapper className="flex-1">
       <ThemedView style={styles.container}>
-        <ThemedText type="title">Cette page n'existe pas.</ThemedText>
+        <ThemedText type="title">Cette page n&apos;existe pas.</ThemedText>
         <Link href="/" style={styles.link}>
-          <ThemedText type="link">Retour à l'accueil</ThemedText>
+          <ThemedText type="link">Retour à l&apos;accueil</ThemedText>
         </Link>
       </ThemedView>
     </ScreenWrapper>

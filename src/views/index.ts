@@ -4,3 +4,4 @@ export { default as MenuView } from "./MenuView";
 export { NotFoundView } from "./NotFoundView";
 export { ProductDetailView } from "./ProductDetailView";
 export { TabsLayoutView } from "./TabsLayoutView";
+export { CheckoutView } from "./CheckoutView";

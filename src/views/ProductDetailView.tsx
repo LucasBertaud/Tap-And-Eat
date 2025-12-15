@@ -36,7 +36,6 @@ export function ProductDetailView({ productId }: ProductDetailViewProps) {
     getSelectedOptionsList,
   } = useProductDetailViewModel(productId);
 
-  // Gestion de la sélection avec affichage d'erreur
   const onOptionToggle = (groupId: string, optionId: string) => {
     const errorMessage = handleOptionToggle(groupId, optionId);
     if (errorMessage) {
@@ -53,10 +52,8 @@ export function ProductDetailView({ productId }: ProductDetailViewProps) {
       return;
     }
 
-    // Récupérer les options sélectionnées depuis le ViewModel
     const selectedOptionsList = getSelectedOptionsList();
 
-    // Ajouter au panier via Redux
     dispatch(
       addToCart({
         product,
@@ -112,72 +109,71 @@ export function ProductDetailView({ productId }: ProductDetailViewProps) {
       <ScrollView className="flex-1" contentContainerClassName="items-center">
         <View className="w-full">
           <View className="w-full md:h-[42rem] h-80 bg-gray-200">
-          {product.image_url ? (
-            <Image
-              source={{ uri: product.image_url }}
-              className="w-full h-full"
-              resizeMode="cover"
-            />
-          ) : (
-            <View className="w-full h-full items-center justify-center">
-              <Text className="text-8xl">🍔</Text>
-            </View>
-          )}
+            {product.image_url ? (
+              <Image
+                source={{ uri: product.image_url }}
+                className="w-full h-full"
+                resizeMode="cover"
+              />
+            ) : (
+              <View className="w-full h-full items-center justify-center">
+                <Text className="text-8xl">🍔</Text>
+              </View>
+            )}
           </View>
 
           <View className="bg-white p-6 md:p-8">
-          <Text className="text-2xl font-bold text-gray-900 mb-2">
-            {product.name}
-          </Text>
-
-          {product.description && (
-            <Text className="text-base text-gray-600 mb-4 leading-6">
-              {product.description}
+            <Text className="text-2xl font-bold text-gray-900 mb-2">
+              {product.name}
             </Text>
-          )}
 
-          <Text className="text-3xl font-bold text-primary-500">
-            {product.base_price.toFixed(2)} €
-          </Text>
+            {product.description && (
+              <Text className="text-base text-gray-600 mb-4 leading-6">
+                {product.description}
+              </Text>
+            )}
+
+            <Text className="text-3xl font-bold text-primary-500">
+              {product.base_price.toFixed(2)} €
+            </Text>
           </View>
 
           {product.ingredients && product.ingredients.length > 0 && (
             <View className="bg-white mt-2 p-6 md:p-8">
-            <Text className="text-lg font-semibold text-secondary-900 mb-3">
-              Ingrédients
-            </Text>
-            <View className="flex-row flex-wrap">
-              {product.ingredients.map((ingredient, index) => (
-                <View
-                  key={index}
-                  className="bg-secondary-100 rounded-full px-4 py-2 mr-2 mb-2"
-                >
-                  <Text className="text-sm text-secondary-700">
-                    {ingredient}
-                  </Text>
-                </View>
-              ))}
-            </View>
+              <Text className="text-lg font-semibold text-secondary-900 mb-3">
+                Ingrédients
+              </Text>
+              <View className="flex-row flex-wrap">
+                {product.ingredients.map((ingredient, index) => (
+                  <View
+                    key={index}
+                    className="bg-secondary-100 rounded-full px-4 py-2 mr-2 mb-2"
+                  >
+                    <Text className="text-sm text-secondary-700">
+                      {ingredient}
+                    </Text>
+                  </View>
+                ))}
+              </View>
             </View>
           )}
 
-          {/* Personnalisation */}
           {product.option_groups && product.option_groups.length > 0 && (
             <View className="bg-white mt-2 p-6 md:p-8">
-            <Text className="text-2xl font-bold text-secondary-900 mb-6">
-              Personnalisez votre commande
-            </Text>
+              <Text className="text-2xl font-bold text-secondary-900 mb-6">
+                Personnalisez votre commande
+              </Text>
 
-            {product.option_groups.map((group) => (
-              <OptionGroupSelector
-                key={group.id}
-                group={group}
-                selectedOptionIds={selectedOptions[group.id] || []}
-                onOptionToggle={(optionId) =>
-                  onOptionToggle(group.id, optionId)
-                }
-              />
-            ))}
+              {product.option_groups.map((group) => (
+                <OptionGroupSelector
+                  key={group.id}
+                  group={group}
+                  selectedOptionIds={selectedOptions[group.id] || []}
+                  onOptionToggle={(optionId) =>
+                    onOptionToggle(group.id, optionId)
+                  }
+                />
+              ))}
             </View>
           )}
 
@@ -185,62 +181,59 @@ export function ProductDetailView({ productId }: ProductDetailViewProps) {
         </View>
       </ScrollView>
 
-      {/* Barre d'ajout au panier fixe en bas */}
       {product.is_available && (
         <View className="bg-white border-t border-secondary-200 px-6 pt-4 pb-8 shadow-lg">
           <View className="w-full max-w-4xl mx-auto">
-          {/* Sélecteur de quantité */}
-          <View className="flex-row items-center justify-between mb-4">
-            <Text className="text-lg font-bold text-secondary-900">
-              Quantité
-            </Text>
-            <View className="flex-row items-center bg-secondary-100 rounded-xl overflow-hidden">
-              <TouchableOpacity
-                onPress={() => setQuantity(Math.max(1, quantity - 1))}
-                className="w-14 h-14 items-center justify-center"
-                activeOpacity={0.7}
-              >
-                <Ionicons name="remove-circle" size={32} color="#F97316" />
-              </TouchableOpacity>
-              <Text className="text-2xl font-bold text-secondary-900 px-6">
-                {quantity}
+            <View className="flex-row items-center justify-between mb-4">
+              <Text className="text-lg font-bold text-secondary-900">
+                Quantité
               </Text>
-              <TouchableOpacity
-                onPress={() => setQuantity(quantity + 1)}
-                className="w-14 h-14 items-center justify-center"
-                activeOpacity={0.7}
-              >
-                <Ionicons name="add-circle" size={32} color="#F97316" />
-              </TouchableOpacity>
-            </View>
-          </View>
-
-          {/* Bouton ajouter au panier */}
-          <TouchableOpacity
-            onPress={handleAddToCart}
-            disabled={!canAddToCart}
-            className={`rounded-xl py-5 items-center shadow-lg ${
-              canAddToCart ? "bg-primary-500" : "bg-secondary-400"
-            }`}
-            activeOpacity={0.8}
-          >
-            <View className="flex-row items-center justify-between w-full px-6">
-              <Text className="text-white text-xl font-bold">
-                Ajouter au panier
-              </Text>
-              <View className="bg-white/20 rounded-xl px-4 py-2">
-                <Text className="text-white text-xl font-black">
-                  {totalPrice.toFixed(2)} €
+              <View className="flex-row items-center bg-secondary-100 rounded-xl overflow-hidden">
+                <TouchableOpacity
+                  onPress={() => setQuantity(Math.max(1, quantity - 1))}
+                  className="w-14 h-14 items-center justify-center"
+                  activeOpacity={0.7}
+                >
+                  <Ionicons name="remove-circle" size={32} color="#F97316" />
+                </TouchableOpacity>
+                <Text className="text-2xl font-bold text-secondary-900 px-6">
+                  {quantity}
                 </Text>
+                <TouchableOpacity
+                  onPress={() => setQuantity(quantity + 1)}
+                  className="w-14 h-14 items-center justify-center"
+                  activeOpacity={0.7}
+                >
+                  <Ionicons name="add-circle" size={32} color="#F97316" />
+                </TouchableOpacity>
               </View>
             </View>
-          </TouchableOpacity>
 
-          {!canAddToCart && (
-            <Text className="text-error-600 text-sm text-center mt-3 font-medium">
-              ⚠️ Sélectionnez toutes les options requises
-            </Text>
-          )}
+            <TouchableOpacity
+              onPress={handleAddToCart}
+              disabled={!canAddToCart}
+              className={`rounded-xl py-5 items-center shadow-lg ${
+                canAddToCart ? "bg-primary-500" : "bg-secondary-400"
+              }`}
+              activeOpacity={0.8}
+            >
+              <View className="flex-row items-center justify-between w-full px-6">
+                <Text className="text-white text-xl font-bold">
+                  Ajouter au panier
+                </Text>
+                <View className="bg-white/20 rounded-xl px-4 py-2">
+                  <Text className="text-white text-xl font-black">
+                    {totalPrice.toFixed(2)} €
+                  </Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+
+            {!canAddToCart && (
+              <Text className="text-error-600 text-sm text-center mt-3 font-medium">
+                ⚠️ Sélectionnez toutes les options requises
+              </Text>
+            )}
           </View>
         </View>
       )}

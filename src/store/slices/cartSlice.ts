@@ -13,16 +13,10 @@ const initialState: CartState = {
   lastUpdated: null,
 };
 
-/**
- * Cart Slice - Gestion du panier
- */
 const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    /**
-     * Ajouter un article au panier
-     */
     addToCart: (
       state,
       action: PayloadAction<{
@@ -33,11 +27,9 @@ const cartSlice = createSlice({
     ) => {
       const { product, selectedOptions, quantity } = action.payload;
 
-      // Vérifier si un article identique existe déjà (même produit + mêmes options)
       const existingItemIndex = state.items.findIndex((item) => {
         if (item.product.id !== product.id) return false;
 
-        // Comparer les options sélectionnées
         if (item.selectedOptions.length !== selectedOptions.length)
           return false;
 
@@ -50,10 +42,8 @@ const cartSlice = createSlice({
       });
 
       if (existingItemIndex !== -1) {
-        // Article existant : augmenter la quantité
         state.items[existingItemIndex].quantity += quantity;
       } else {
-        // Nouvel article
         const newItem: CartItem = {
           id: `${product.id}-${Date.now()}`,
           product,
@@ -66,9 +56,6 @@ const cartSlice = createSlice({
       state.lastUpdated = new Date().toISOString();
     },
 
-    /**
-     * Mettre à jour la quantité d'un article
-     */
     updateQuantity: (
       state,
       action: PayloadAction<{ itemId: string; quantity: number }>
@@ -78,7 +65,6 @@ const cartSlice = createSlice({
 
       if (item) {
         if (quantity <= 0) {
-          // Supprimer si quantité <= 0
           state.items = state.items.filter((i) => i.id !== itemId);
         } else {
           item.quantity = quantity;
@@ -87,17 +73,11 @@ const cartSlice = createSlice({
       }
     },
 
-    /**
-     * Supprimer un article du panier
-     */
     removeFromCart: (state, action: PayloadAction<string>) => {
       state.items = state.items.filter((item) => item.id !== action.payload);
       state.lastUpdated = new Date().toISOString();
     },
 
-    /**
-     * Vider le panier
-     */
     clearCart: (state) => {
       state.items = [];
       state.lastUpdated = new Date().toISOString();
@@ -108,9 +88,6 @@ const cartSlice = createSlice({
 export const { addToCart, updateQuantity, removeFromCart, clearCart } =
   cartSlice.actions;
 
-/**
- * Sélecteurs
- */
 export const selectCartItems = (state: { cart: CartState }) => state.cart.items;
 
 export const selectCartItemCount = (state: { cart: CartState }) =>

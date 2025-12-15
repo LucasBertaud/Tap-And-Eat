@@ -14,9 +14,6 @@ export class ProductDetailViewModel {
     }
   }
 
-  /**
-   * Gère la sélection/désélection d'une option
-   */
   toggleOption(
     selectedOptions: Record<string, string[]>,
     groupId: string,
@@ -29,9 +26,7 @@ export class ProductDetailViewModel {
     const currentSelections = selectedOptions[groupId] || [];
 
     if (group.allow_multiple) {
-      // Sélection multiple
       if (currentSelections.includes(optionId)) {
-        // Désélectionner
         return {
           newSelections: {
             ...selectedOptions,
@@ -39,7 +34,6 @@ export class ProductDetailViewModel {
           },
         };
       } else {
-        // Vérifier max_selections
         if (
           group.max_selections &&
           currentSelections.length >= group.max_selections
@@ -57,7 +51,6 @@ export class ProductDetailViewModel {
         };
       }
     } else {
-      // Sélection unique
       return {
         newSelections: {
           ...selectedOptions,
@@ -67,9 +60,6 @@ export class ProductDetailViewModel {
     }
   }
 
-  /**
-   * Calcule le prix total avec options et quantité
-   */
   calculateTotalPrice(
     product: ProductWithOptions,
     selectedOptions: Record<string, string[]>,
@@ -77,7 +67,6 @@ export class ProductDetailViewModel {
   ): number {
     let price = product.base_price;
 
-    // Ajouter les modificateurs de prix des options sélectionnées
     product.option_groups?.forEach((group) => {
       const groupSelections = selectedOptions[group.id] || [];
       groupSelections.forEach((optionId) => {
@@ -91,9 +80,6 @@ export class ProductDetailViewModel {
     return price * quantity;
   }
 
-  /**
-   * Valide que toutes les options requises sont sélectionnées
-   */
   validateRequiredOptions(
     product: ProductWithOptions,
     selectedOptions: Record<string, string[]>
@@ -112,9 +98,6 @@ export class ProductDetailViewModel {
     });
   }
 
-  /**
-   * Convertit les sélections en liste de SelectedOption
-   */
   buildSelectedOptionsList(
     product: ProductWithOptions,
     selectedOptions: Record<string, string[]>
@@ -185,7 +168,6 @@ export function useProductDetailViewModel(productId: string) {
     }
   };
 
-  // Gestion de la sélection d'options via ViewModel
   const handleOptionToggle = useCallback(
     (groupId: string, optionId: string) => {
       if (!product) return;
@@ -198,7 +180,6 @@ export function useProductDetailViewModel(productId: string) {
       );
 
       if (result.error) {
-        // L'erreur sera gérée dans la View
         return result.error;
       }
 
@@ -208,19 +189,16 @@ export function useProductDetailViewModel(productId: string) {
     [product, selectedOptions, viewModel]
   );
 
-  // Calcul du prix total via ViewModel
   const totalPrice = useMemo(() => {
     if (!product) return 0;
     return viewModel.calculateTotalPrice(product, selectedOptions, quantity);
   }, [product, selectedOptions, quantity, viewModel]);
 
-  // Validation via ViewModel
   const canAddToCart = useMemo(() => {
     if (!product) return false;
     return viewModel.validateRequiredOptions(product, selectedOptions);
   }, [product, selectedOptions, viewModel]);
 
-  // Construction de la liste des options sélectionnées
   const getSelectedOptionsList = useCallback(() => {
     if (!product) return [];
     return viewModel.buildSelectedOptionsList(product, selectedOptions);
