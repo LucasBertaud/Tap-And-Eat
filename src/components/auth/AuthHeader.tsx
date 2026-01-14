@@ -11,9 +11,7 @@ interface AuthHeaderProps {
 export const AuthHeader = ({ isSignUpMode }: AuthHeaderProps) => {
   return (
     <View className="mb-12 items-center">
-      <Text className="mb-4 text-6xl font-bold text-white">
-        🍔 Tap & Eat
-      </Text>
+      <Text className="mb-4 text-6xl font-bold text-white">🍔 Tap & Eat</Text>
       <Text className="text-xl text-white">
         {isSignUpMode ? "Créer un compte" : "Bienvenue !"}
       </Text>

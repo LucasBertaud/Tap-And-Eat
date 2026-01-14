@@ -12,7 +12,13 @@ import {
 import { useAuthViewModel } from "@/src/viewmodels";
 import { VideoView, useVideoPlayer } from "expo-video";
 import { useEffect, useState } from "react";
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  View,
+} from "react-native";
 
 const AuthView = () => {
   const { showAlert, AlertComponent } = useAlert();
