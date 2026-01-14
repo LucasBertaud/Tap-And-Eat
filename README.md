@@ -1,50 +1,181 @@
-# Welcome to your Expo app 👋
+# Tap-And-Eat 🍽️
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Application React Native développée avec Expo et suivant l'architecture **MVVM** (Model-View-ViewModel).
 
-## Get started
+## 🏗️ Architecture MVVM
 
-1. Install dependencies
+Ce projet suit le pattern MVVM pour une séparation claire des responsabilités :
+
+```
+├── models/          # Modèles de données (interfaces TypeScript)
+│   ├── Auth.ts
+│   └── User.ts
+├── services/        # Services pour les appels API/Supabase
+│   ├── AuthService.ts
+│   └── UserService.ts
+├── viewmodels/      # ViewModels avec logique métier (MobX)
+│   ├── AuthViewModel.ts
+│   └── UserViewModel.ts
+├── views/           # Composants de vue réutilisables
+│   ├── AuthView.tsx
+│   └── ...
+├── app/             # Routes Expo Router
+├── components/      # Composants UI réutilisables
+├── hooks/           # Custom React Hooks
+└── providers/       # Context Providers (Auth, etc.)
+```
+
+### Flux de données MVVM
+
+1. **Model** : Définit la structure des données (interfaces TypeScript)
+2. **Service** : Gère les appels API et la logique d'accès aux données
+3. **ViewModel** : Contient l'état et la logique métier (observable avec MobX)
+4. **View** : Affiche l'UI et interagit avec le ViewModel
+
+## 🚀 Démarrage
+
+### Prérequis
+
+- Node.js (v18+)
+- npm ou yarn
+- Expo CLI
+- Compte Supabase configuré
+
+### Installation
+
+1. Cloner le dépôt
+
+   ```bash
+   git clone <repository-url>
+   cd Tap-And-Eat
+   ```
+
+2. Installer les dépendances
 
    ```bash
    npm install
    ```
 
-2. Start the app
+3. Configurer les variables d'environnement
+   - Créer un fichier `.env` à la racine
+   - Ajouter vos credentials Supabase :
+     ```
+     EXPO_PUBLIC_SUPABASE_URL=https://votre-projet.supabase.co
+     EXPO_PUBLIC_SUPABASE_ANON_KEY=votre-cle-anon
+     ```
 
+4. Lancer l'application
    ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+## 🔐 Authentification
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+L'authentification est gérée par **Supabase** avec l'architecture MVVM :
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- **Model** : `Auth.ts` - Interfaces pour les credentials et erreurs
+- **Service** : `AuthService.ts` - Appels Supabase (signIn, signUp, signOut)
+- **ViewModel** : `AuthViewModel.ts` - Logique métier et état observable
+- **View** : `AuthView.tsx` - UI du formulaire de connexion/inscription
+- **Provider** : `AuthProvider.tsx` - Context global de l'authentification
 
-## Get a fresh project
+### Utilisation
 
-When you're ready, run:
+```typescript
+// Dans un composant
+import { useAuthContext } from "@/hooks/use-auth-context";
 
-```bash
-npm run reset-project
+function MyComponent() {
+  const { session, isLoggedIn, profile } = useAuthContext();
+  // ...
+}
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 📦 Technologies utilisées
 
-## Learn more
+- **React Native** - Framework mobile
+- **Expo** - Toolchain et développement
+- **TypeScript** - Typage statique
+- **MobX** - Gestion d'état réactive
+- **Supabase** - Backend (auth, database)
+- **Expo Router** - Navigation file-based
 
-To learn more about developing your project with Expo, look at the following resources:
+## 🎯 Ajouter une nouvelle fonctionnalité (MVVM)
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Exemple : Ajouter une gestion de produits
 
-## Join the community
+1. **Créer le Model** (`models/Product.ts`)
 
-Join our community of developers creating universal apps.
+```typescript
+export interface Product {
+  id: string;
+  name: string;
+  price: number;
+}
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+2. **Créer le Service** (`services/ProductService.ts`)
+
+```typescript
+class ProductService {
+  async fetchProducts(): Promise<Product[]> {
+    // Appel API
+  }
+}
+export default new ProductService();
+```
+
+3. **Créer le ViewModel** (`viewmodels/ProductViewModel.ts`)
+
+```typescript
+import { makeAutoObservable } from "mobx";
+
+class ProductViewModel {
+  products: Product[] = [];
+  loading = false;
+
+  constructor() {
+    makeAutoObservable(this);
+  }
+
+  async loadProducts() {
+    this.loading = true;
+    this.products = await ProductService.fetchProducts();
+    this.loading = false;
+  }
+}
+export default ProductViewModel;
+```
+
+4. **Créer la View** (`views/ProductListView.tsx`)
+
+```typescript
+import { observer } from "mobx-react-lite";
+
+const ProductListView = observer(({ viewModel }: Props) => {
+  // UI qui observe viewModel.products
+});
+```
+
+5. **Utiliser dans une route** (`app/(tabs)/products.tsx`)
+
+```typescript
+const viewModel = useMemo(() => new ProductViewModel(), [])
+return <ProductListView viewModel={viewModel} />
+```
+
+## 📝 Scripts disponibles
+
+- `npm start` - Lancer le serveur Expo
+- `npm run android` - Lancer sur Android
+- `npm run ios` - Lancer sur iOS
+- `npm run web` - Lancer sur le web
+- `npm run lint` - Linter le code
+
+## 🤝 Contribution
+
+Les contributions sont les bienvenues ! Assurez-vous de suivre l'architecture MVVM établie.
+
+## 📄 Licence
+
+MIT

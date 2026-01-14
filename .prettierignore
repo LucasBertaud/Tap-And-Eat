@@ -1,0 +1,24 @@
+# Dépendances
+node_modules/
+.expo/
+.expo-shared/
+
+# Build
+dist/
+build/
+android/
+ios/
+
+# Tests
+coverage/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
