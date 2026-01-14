@@ -167,6 +167,7 @@ const AuthView = () => {
                     label="Nom complet"
                     required
                     placeholder="Jean Dupont"
+                    isAuthForm={true}
                     value={fullName}
                     onChangeText={(text) => {
                       setFullName(text);
@@ -183,6 +184,7 @@ const AuthView = () => {
                   label="Email"
                   required
                   placeholder="exemple@email.com"
+                  isAuthForm={true}
                   value={email}
                   onChangeText={(text) => {
                     setEmail(text);
@@ -200,6 +202,7 @@ const AuthView = () => {
                     label="Téléphone"
                     required
                     placeholder="06 12 34 56 78"
+                    isAuthForm={true}
                     value={phone}
                     onChangeText={(text) => {
                       setPhone(text);
@@ -216,6 +219,7 @@ const AuthView = () => {
                   label="Mot de passe"
                   required
                   placeholder="••••••••"
+                  isAuthForm={true}
                   value={password}
                   onChangeText={(text) => {
                     setPassword(text);

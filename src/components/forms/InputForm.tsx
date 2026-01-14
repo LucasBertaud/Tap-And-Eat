@@ -13,6 +13,7 @@ interface InputFormProps extends TextInputProps {
   error?: string;
   required?: boolean;
   isPassword?: boolean;
+  isAuthForm?: boolean;
 }
 
 /**
@@ -27,6 +28,7 @@ export const InputForm = ({
   value,
   onChangeText,
   isPassword = false,
+  isAuthForm = false,
   ...props
 }: InputFormProps) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -34,7 +36,7 @@ export const InputForm = ({
 
   return (
     <View className="mb-6">
-      <Text className="mb-2 text-lg font-medium text-white md:text-xl">
+      <Text className={`mb-2 text-lg font-medium ${isAuthForm ? "text-white" : "text-black"} md:text-xl`}>
         {label} {required && <Text className="text-error-500">*</Text>}
       </Text>
       <View className="relative">
