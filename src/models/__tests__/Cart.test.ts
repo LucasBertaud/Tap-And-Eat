@@ -5,6 +5,7 @@ import {
   type CartItem,
 } from "@/src/models/Cart";
 import type { Product } from "@/src/models/Menu";
+import { describe, expect, it } from "vitest";
 
 describe("Cart - Calcul du total du panier", () => {
   const mockProduct: Product = {

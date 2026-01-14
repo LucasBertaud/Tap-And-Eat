@@ -1,4 +1,5 @@
 import type { ProductWithOptions } from "@/src/models";
+import { beforeEach, describe, expect, it } from "vitest";
 import { ProductDetailViewModel } from "../ProductDetailViewModel";
 
 describe("ProductDetailViewModel - Validation des options", () => {
