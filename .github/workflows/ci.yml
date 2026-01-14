@@ -1,56 +1,56 @@
 name: CI/CD Pipeline
 
 on:
-    push:
-        branches: [main, develop, "**"]
-    pull_request:
-        branches: [main, develop]
+  push:
+    branches: [main, develop, "**"]
+  pull_request:
+    branches: [main, develop]
 
 jobs:
-    test:
-        name: Install, Build & Test
-        runs-on: ubuntu-latest
+  test:
+    name: Install, Build & Test
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: 📥 Checkout repository
-              uses: actions/checkout@v4
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
 
-            - name: 🔧 Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: "20"
-                  cache: "npm"
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
 
-            - name: 📦 Install dependencies
-              run: npm ci
+      - name: 📦 Install dependencies
+        run: npm ci
 
-            - name: 🎨 Check code formatting
-              run: npm run format:check
+      - name: 🎨 Check code formatting
+        run: npm run format:check
 
-            - name: 🔍 Run ESLint
-              run: npm run lint
-              continue-on-error: true
+      - name: 🔍 Run ESLint
+        run: npm run lint
+        continue-on-error: true
 
-            - name: 🔎 TypeScript type checking
-              run: npm run type-check
+      - name: 🔎 TypeScript type checking
+        run: npm run type-check
 
-            - name: 🧪 Run tests
-              run: npm test -- --ci --coverage --maxWorkers=2
+      - name: 🧪 Run tests
+        run: npx vitest run --coverage
 
-            - name: 📊 Upload coverage reports
-              uses: codecov/codecov-action@v4
-              if: always()
-              with:
-                  token: ${{ secrets.CODECOV_TOKEN }}
-                  files: ./coverage/lcov.info
-                  fail_ci_if_error: false
-              continue-on-error: true
+      - name: 📊 Upload coverage reports
+        uses: codecov/codecov-action@v4
+        if: always()
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
+          fail_ci_if_error: false
+        continue-on-error: true
 
-            - name: 🏗️ Build Expo app
-              run: npx expo export --platform android
-              env:
-                  EXPO_PUBLIC_SUPABASE_URL: ${{ secrets.EXPO_PUBLIC_SUPABASE_URL }}
-                  EXPO_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.EXPO_PUBLIC_SUPABASE_ANON_KEY }}
+      - name: 🏗️ Build Expo app
+        run: npx expo export --platform android
+        env:
+          EXPO_PUBLIC_SUPABASE_URL: ${{ secrets.EXPO_PUBLIC_SUPABASE_URL }}
+          EXPO_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.EXPO_PUBLIC_SUPABASE_ANON_KEY }}
 
-            - name: ✅ Pipeline completed
-              run: echo "✅ All checks passed!"
+      - name: ✅ Pipeline completed
+        run: echo "✅ All checks passed!"
