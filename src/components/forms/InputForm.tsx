@@ -36,7 +36,9 @@ export const InputForm = ({
 
   return (
     <View className="mb-6">
-      <Text className={`mb-2 text-lg font-medium ${isAuthForm ? "text-white" : "text-black"} md:text-xl`}>
+      <Text
+        className={`mb-2 text-lg font-medium ${isAuthForm ? "text-white" : "text-black"} md:text-xl`}
+      >
         {label} {required && <Text className="text-error-500">*</Text>}
       </Text>
       <View className="relative">
