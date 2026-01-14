@@ -1,6 +1,7 @@
 import { AuthFooter, AuthHeader, AuthToggle } from "@/src/components/auth";
 import { Button, ErrorMessage, InputForm } from "@/src/components/forms";
 import { ScreenWrapper } from "@/src/components/ui";
+import { BURGER_VIDEO_URL } from "@/src/constants/media";
 import { useAlert } from "@/src/hooks/use-alert";
 import {
   validateEmail,
@@ -9,8 +10,9 @@ import {
   validatePhone,
 } from "@/src/utils/auth";
 import { useAuthViewModel } from "@/src/viewmodels";
-import { useState } from "react";
-import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
+import { VideoView, useVideoPlayer } from "expo-video";
+import { useEffect, useState } from "react";
+import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from "react-native";
 
 const AuthView = () => {
   const { showAlert, AlertComponent } = useAlert();
@@ -25,6 +27,14 @@ const AuthView = () => {
   const [phoneError, setPhoneError] = useState("");
 
   const viewModel = useAuthViewModel();
+
+  const player = useVideoPlayer(BURGER_VIDEO_URL);
+
+  useEffect(() => {
+    player.loop = true;
+    player.muted = true;
+    player.play();
+  }, [player]);
 
   const validateForm = (): boolean => {
     let isValid = true;
@@ -124,6 +134,14 @@ const AuthView = () => {
 
   return (
     <ScreenWrapper className="flex-1 bg-background">
+      {/* Background video: place a file at src/assets/videos/burgers.mp4 */}
+      <VideoView
+        player={player}
+        style={StyleSheet.absoluteFill}
+        contentFit="cover"
+      />
+      {/* Dim overlay so the form stays readable */}
+      <View style={styles.overlay} pointerEvents="none" />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         className="flex-1"
@@ -231,5 +249,12 @@ const AuthView = () => {
     </ScreenWrapper>
   );
 };
+
+const styles = StyleSheet.create({
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0,0,0,0.6)",
+  },
+});
 
 export default AuthView;

@@ -22,7 +22,7 @@ export const AuthToggle = ({
       disabled={disabled}
       activeOpacity={0.7}
     >
-      <Text className="text-center text-base font-medium text-primary-600">
+      <Text className="text-center text-base font-medium text-white">
         {isSignUpMode
           ? "Vous avez déjà un compte ? Connectez-vous"
           : "Pas de compte ? Inscrivez-vous"}

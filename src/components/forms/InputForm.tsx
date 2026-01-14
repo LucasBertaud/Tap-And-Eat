@@ -34,7 +34,7 @@ export const InputForm = ({
 
   return (
     <View className="mb-6">
-      <Text className="mb-2 text-lg font-medium text-text-primary md:text-xl">
+      <Text className="mb-2 text-lg font-medium text-white md:text-xl">
         {label} {required && <Text className="text-error-500">*</Text>}
       </Text>
       <View className="relative">
