@@ -3,8 +3,8 @@ import {
   calculateItemPrice,
   calculateItemTotal,
   type CartItem,
-} from "../Cart";
-import type { Product } from "../Menu";
+} from "@/src/models/Cart";
+import type { Product } from "@/src/models/Menu";
 
 describe("Cart - Calcul du total du panier", () => {
   const mockProduct: Product = {
