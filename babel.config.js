@@ -5,5 +5,14 @@ module.exports = function (api) {
       ["babel-preset-expo", { jsxImportSource: "nativewind" }],
       "nativewind/babel",
     ],
+    env: {
+      test: {
+        presets: [
+          ["@babel/preset-env", { targets: { node: "current" } }],
+          "@babel/preset-typescript",
+          "@babel/preset-react",
+        ],
+      },
+    },
   };
 };
